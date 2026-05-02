@@ -31,13 +31,13 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "AL FATEH — Distribution agroalimentaire en Côte d'Ivoire" },
+      { title: "AL FATEH" },
       {
         name: "description",
         content:
           "AL FATEH, leader de la distribution en gros agroalimentaire en Côte d'Ivoire. Réseau national, prix usine, plus de 40 ans d'expérience.",
       },
-      { property: "og:title", content: "AL FATEH — Distribution agroalimentaire en Côte d'Ivoire" },
+      { property: "og:title", content: "AL FATEH" },
       {
         property: "og:description",
         content:
@@ -45,6 +45,12 @@ export const Route = createRootRoute({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "AL FATEH" },
+      { name: "description", content: "AL FATEH Connect is a professional website for an agro-food distribution company in Ivory Coast." },
+      { property: "og:description", content: "AL FATEH Connect is a professional website for an agro-food distribution company in Ivory Coast." },
+      { name: "twitter:description", content: "AL FATEH Connect is a professional website for an agro-food distribution company in Ivory Coast." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0e7dbc10-3265-4564-a996-d9622e656c85/id-preview-9e2f0a91--69f07849-7552-4d22-8fb2-1f1fa51beaf8.lovable.app-1777750754755.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0e7dbc10-3265-4564-a996-d9622e656c85/id-preview-9e2f0a91--69f07849-7552-4d22-8fb2-1f1fa51beaf8.lovable.app-1777750754755.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
