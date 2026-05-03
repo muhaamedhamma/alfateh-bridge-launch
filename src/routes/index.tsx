@@ -6,9 +6,17 @@ import {
   Factory,
   TrendingUp,
   ShieldCheck,
-  Map,
-  Award,
+  Map as MapIcon,
+  Package,
+  Zap,
+  Network,
+  ShoppingCart,
   Quote,
+  CheckCircle2,
+  Building2,
+  Store,
+  ShoppingBag,
+  Users,
 } from "lucide-react";
 import heroImg from "@/assets/hero-warehouse.jpg";
 import retailImg from "@/assets/retail-store.jpg";
@@ -19,16 +27,16 @@ import { CtaBanner } from "@/components/site/CtaBanner";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "AL FATEH — Distribution agroalimentaire en Côte d'Ivoire" },
+      { title: "AL FATEH — Le moteur de la distribution agroalimentaire en Côte d'Ivoire" },
       {
         name: "description",
         content:
-          "Le partenaire stratégique des usines et marques agroalimentaires en Côte d'Ivoire. Réseau national, prix usine, +40 ans d'expertise.",
+          "AL FATEH connecte marques, usines et distributeurs à travers un réseau performant, fiable et structuré, partout en Côte d'Ivoire.",
       },
-      { property: "og:title", content: "AL FATEH — Distribution agroalimentaire en Côte d'Ivoire" },
+      { property: "og:title", content: "AL FATEH — Hub de distribution agroalimentaire" },
       {
         property: "og:description",
-        content: "Le pont stratégique entre les usines et le marché ivoirien.",
+        content: "Pont stratégique entre les usines et le marché ivoirien.",
       },
       { property: "og:image", content: heroImg },
     ],
@@ -43,54 +51,48 @@ const stats = [
   { value: "24/7", label: "Approvisionnement continu" },
 ];
 
-const services = [
-  {
-    icon: Truck,
-    title: "Distribution en gros",
-    desc: "Un réseau logistique puissant pour livrer partout en Côte d'Ivoire.",
-  },
-  {
-    icon: Factory,
-    title: "Accès prix usine",
-    desc: "Des partenariats industriels directs pour une compétitivité maximale.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Développement de marques",
-    desc: "Nous accélérons la pénétration de votre marque sur le marché ivoirien.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Approvisionnement fiable",
-    desc: "Disponibilité constante, sans rupture, pour vos clients finaux.",
-  },
+const distributorBenefits = [
+  { icon: Package, title: "Disponibilité continue", desc: "Stocks tampons et réassort permanent : zéro rupture sur vos références." },
+  { icon: Factory, title: "Prix compétitifs", desc: "Accès direct aux tarifs usine grâce à nos partenariats industriels." },
+  { icon: ShoppingCart, title: "Large gamme", desc: "Un catalogue agroalimentaire complet pour servir tous vos rayons." },
+  { icon: Truck, title: "Logistique efficace", desc: "Livraisons régulières, fiables et adaptées au rythme de votre commerce." },
 ];
 
-const reasons = [
-  { title: "Réseau national", desc: "Couverture intégrale du territoire ivoirien.", icon: Map },
-  { title: "Fiabilité", desc: "Engagement contractuel et qualité d'exécution.", icon: ShieldCheck },
-  { title: "Expertise marché", desc: "Connaissance fine du retail local.", icon: Award },
-  { title: "Prix compétitifs", desc: "Accès direct aux tarifs usine.", icon: Factory },
+const brandBenefits = [
+  { icon: Zap, title: "Déploiement rapide", desc: "Activez votre marque sur le marché ivoirien dès le premier mois." },
+  { icon: ShieldCheck, title: "Expertise locale 40+ ans", desc: "Une équipe qui maîtrise les codes du retail ouest-africain." },
+  { icon: Network, title: "Réseau actif", desc: "Une présence terrain dense, du grand supermarché au détaillant de quartier." },
+  { icon: TrendingUp, title: "Accélération des ventes", desc: "Une force commerciale dédiée à la croissance de vos volumes." },
+];
+
+const clientTypes = [
+  { icon: Building2, label: "Supermarchés" },
+  { icon: Store, label: "Supérettes" },
+  { icon: ShoppingBag, label: "Grossistes" },
+  { icon: Users, label: "Détaillants" },
 ];
 
 const testimonials = [
   {
+    tag: "Marque distribuée",
     quote:
       "AL FATEH a transformé notre déploiement en Côte d'Ivoire. Leur réseau et leur rigueur opérationnelle sont exceptionnels.",
     author: "Directeur Export",
     company: "Groupe agroalimentaire international",
   },
   {
+    tag: "Commerçant partenaire",
     quote:
-      "Un partenaire stratégique fiable, avec une vraie compréhension du marché ouest-africain.",
-    author: "VP Commercial",
-    company: "Marque de produits laitiers",
+      "Approvisionnement régulier, prix justes, disponibilité constante : un vrai partenaire de confiance pour notre supérette.",
+    author: "Gérant",
+    company: "Réseau de supérettes — Abidjan",
   },
   {
+    tag: "Marque émergente",
     quote:
       "Grâce à AL FATEH, nous avons doublé notre présence retail en moins de 18 mois.",
     author: "CEO",
-    company: "Marque émergente",
+    company: "Marque agroalimentaire émergente",
   },
 ];
 
@@ -120,33 +122,34 @@ function Home() {
             <div className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-4 py-1.5 mb-7 backdrop-blur">
               <span className="h-2 w-2 rounded-full bg-accent-glow animate-pulse" />
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-glow">
-                Côte d'Ivoire · Distribution agroalimentaire
+                Côte d'Ivoire · Hub agroalimentaire
               </span>
             </div>
 
             <h1 className="font-display text-4xl sm:text-5xl md:text-7xl font-extrabold text-primary-foreground leading-[1.05] text-balance">
-              Le partenaire stratégique de la distribution{" "}
-              <span className="text-accent-glow">agroalimentaire</span> en Côte d'Ivoire.
+              Le moteur de la{" "}
+              <span className="text-accent-glow">distribution agroalimentaire</span>{" "}
+              en Côte d'Ivoire.
             </h1>
 
             <p className="mt-7 text-lg md:text-xl text-primary-foreground/85 max-w-2xl leading-relaxed">
-              Un réseau national, des prix usine et plus de 40 ans d'expertise terrain
-              au service des usines, marques internationales et investisseurs.
+              AL FATEH connecte marques, usines et distributeurs à travers un réseau
+              performant, fiable et structuré.
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
-                to="/partenaires"
+                to="/contact"
                 className="group inline-flex items-center gap-2 rounded-md bg-accent px-7 py-4 text-base font-semibold text-accent-foreground hover:bg-accent-glow transition-smooth shadow-glow"
               >
-                Devenir partenaire
+                Travailler avec nous
                 <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
-                to="/contact"
+                to="/reseau"
                 className="inline-flex items-center gap-2 rounded-md border border-primary-foreground/30 bg-primary-foreground/5 px-7 py-4 text-base font-semibold text-primary-foreground backdrop-blur hover:bg-primary-foreground/10 transition-smooth"
               >
-                Nous contacter
+                Découvrir notre réseau
               </Link>
             </div>
           </motion.div>
@@ -174,176 +177,119 @@ function Home() {
         </div>
       </section>
 
-      {/* ABOUT TEASER */}
+      {/* POSITIONNEMENT HYBRIDE */}
       <Section
-        eyebrow="À propos d'AL FATEH"
-        title="Le pont stratégique entre les usines et le marché ivoirien."
-        description="Spécialisée dans la distribution en gros agroalimentaire, AL FATEH allie expertise terrain, réseau national et accès direct aux prix usine pour offrir aux marques une croissance structurée et durable."
+        eyebrow="Notre positionnement"
+        title="Le pont entre les marques industrielles et le marché ivoirien."
+        description="AL FATEH accompagne à la fois les acteurs de la distribution, en leur garantissant un approvisionnement constant et compétitif, et les marques industrielles, en accélérant leur développement sur le marché ivoirien."
       >
-        <div className="grid gap-10 lg:grid-cols-2 items-center">
+        <div className="grid gap-6 lg:grid-cols-2">
+          {/* Bloc Distributeurs */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="relative"
+            transition={{ duration: 0.6 }}
+            className="relative bg-card border-2 border-accent/30 rounded-2xl p-8 md:p-10 shadow-card hover:shadow-elegant transition-smooth"
           >
-            <div className="absolute -inset-4 bg-gradient-accent rounded-3xl opacity-20 blur-2xl" />
-            <img
-              src={partnershipImg}
-              alt="L'équipe AL FATEH avec ses partenaires industriels"
-              width={1280}
-              height={896}
-              loading="lazy"
-              className="relative rounded-2xl shadow-elegant w-full"
-            />
-          </motion.div>
-          <div className="space-y-6">
-            {[
-              {
-                t: "40+ ans d'expérience cumulée",
-                d: "Une équipe de vétérans de la distribution agroalimentaire ivoirienne.",
-              },
-              {
-                t: "Réseau national structuré",
-                d: "Une couverture intégrale, d'Abidjan aux régions les plus reculées.",
-              },
-              {
-                t: "Expertise retail",
-                d: "Supermarchés, supérettes, grossistes, détaillants — nous parlons leur langue.",
-              },
-            ].map((b) => (
-              <div key={b.t} className="flex gap-4">
-                <div className="shrink-0 mt-1 h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center">
-                  <span className="h-2.5 w-2.5 rounded-full bg-accent" />
-                </div>
-                <div>
-                  <h3 className="font-display text-lg font-bold text-primary">{b.t}</h3>
-                  <p className="text-muted-foreground mt-1">{b.d}</p>
-                </div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-12 w-12 rounded-xl bg-accent/15 text-accent flex items-center justify-center">
+                <ShoppingCart size={22} />
               </div>
-            ))}
-            <Link
-              to="/about"
-              className="inline-flex items-center gap-2 text-accent font-semibold hover:gap-3 transition-all"
-            >
-              Découvrir notre histoire <ArrowRight size={18} />
-            </Link>
-          </div>
-        </div>
-      </Section>
-
-      {/* SERVICES */}
-      <Section
-        className="bg-secondary/40"
-        eyebrow="Nos services"
-        title="Une offre intégrée pour vos ambitions."
-        description="De l'usine au point de vente final, nous orchestrons toute la chaîne de valeur."
-      >
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {services.map((s, i) => (
-            <motion.div
-              key={s.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="group relative bg-card rounded-2xl p-7 shadow-card border border-border/60 hover:-translate-y-1 hover:shadow-elegant transition-smooth"
-            >
-              <div className="h-12 w-12 rounded-xl bg-gradient-accent flex items-center justify-center mb-5 shadow-glow">
-                <s.icon size={22} className="text-accent-foreground" />
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+                  Pour les distributeurs
+                </div>
+                <h3 className="font-display text-xl font-extrabold text-primary">
+                  Approvisionnement performant
+                </h3>
               </div>
-              <h3 className="font-display text-lg font-bold text-primary">{s.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-        <div className="mt-12 text-center">
-          <Link
-            to="/services"
-            className="inline-flex items-center gap-2 text-accent font-semibold hover:gap-3 transition-all"
-          >
-            Tous nos services <ArrowRight size={18} />
-          </Link>
-        </div>
-      </Section>
-
-      {/* WHY US */}
-      <Section
-        eyebrow="Pourquoi AL FATEH"
-        title="Cinq raisons de nous confier votre marque."
-      >
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {reasons.map((r, i) => (
-            <motion.div
-              key={r.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.07 }}
-              className="bg-primary text-primary-foreground rounded-2xl p-7 hover:bg-primary-glow transition-smooth shadow-card"
-            >
-              <r.icon size={28} className="text-accent-glow mb-5" />
-              <h3 className="font-display text-lg font-bold">{r.title}</h3>
-              <p className="mt-2 text-sm text-primary-foreground/70 leading-relaxed">{r.desc}</p>
-            </motion.div>
-          ))}
-          <div className="bg-gradient-accent text-accent-foreground rounded-2xl p-7 shadow-glow flex flex-col justify-between">
-            <div>
-              <h3 className="font-display text-lg font-bold">Disponibilité constante</h3>
-              <p className="mt-2 text-sm text-accent-foreground/85 leading-relaxed">
-                Stocks tampons et logistique réactive : zéro rupture pour vos clients.
-              </p>
             </div>
-            <Link
-              to="/about"
-              className="mt-4 inline-flex items-center gap-2 font-semibold text-sm hover:gap-3 transition-all"
-            >
-              En savoir plus <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </Section>
-
-      {/* PARTNERS / RETAIL */}
-      <Section className="bg-secondary/40">
-        <div className="grid gap-12 lg:grid-cols-2 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 mb-5">
-              <span className="h-px w-8 bg-accent" />
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-                Spécial partenaires
-              </span>
-            </div>
-            <h2 className="font-display text-3xl md:text-5xl font-extrabold text-primary leading-tight text-balance">
-              Usines, marques internationales, nouveaux entrants : votre raccourci vers le marché ivoirien.
-            </h2>
-            <p className="mt-5 text-lg text-muted-foreground leading-relaxed">
-              Réduisez vos coûts de distribution, accélérez votre croissance et bénéficiez d'un accès
-              immédiat à un réseau retail dense et qualifié.
-            </p>
-            <ul className="mt-7 space-y-3">
+            <ul className="space-y-3">
               {[
-                "Accès rapide au marché",
-                "Réduction des coûts de distribution",
-                "Accélération de croissance",
-                "Présence retail démultipliée",
+                "Disponibilité continue des produits",
+                "Prix compétitifs (prix usine)",
+                "Large gamme agroalimentaire",
               ].map((b) => (
-                <li key={b} className="flex items-center gap-3 text-foreground">
-                  <span className="h-6 w-6 rounded-full bg-accent flex items-center justify-center text-accent-foreground text-xs font-bold">
-                    ✓
-                  </span>
+                <li key={b} className="flex items-start gap-3 text-foreground">
+                  <CheckCircle2 size={18} className="text-accent mt-0.5 shrink-0" />
                   <span className="font-medium">{b}</span>
                 </li>
               ))}
             </ul>
-            <Link
-              to="/partenaires"
-              className="mt-8 inline-flex items-center gap-2 rounded-md bg-primary px-7 py-4 text-base font-semibold text-primary-foreground hover:bg-primary-glow transition-smooth shadow-card"
-            >
-              Proposer un partenariat
-              <ArrowRight size={18} />
-            </Link>
+          </motion.div>
+
+          {/* Bloc Marques */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="relative bg-primary text-primary-foreground border-2 border-primary rounded-2xl p-8 md:p-10 shadow-card hover:shadow-elegant transition-smooth"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-12 w-12 rounded-xl bg-primary-foreground/10 text-accent-glow flex items-center justify-center">
+                <Factory size={22} />
+              </div>
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-accent-glow">
+                  Pour les marques & usines
+                </div>
+                <h3 className="font-display text-xl font-extrabold">
+                  Croissance accélérée
+                </h3>
+              </div>
+            </div>
+            <ul className="space-y-3">
+              {[
+                "Accès immédiat au marché ivoirien",
+                "Réseau national structuré",
+                "Développement commercial dédié",
+              ].map((b) => (
+                <li key={b} className="flex items-start gap-3">
+                  <CheckCircle2 size={18} className="text-accent-glow mt-0.5 shrink-0" />
+                  <span className="font-medium text-primary-foreground/90">{b}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+
+        <div className="mt-10 text-center">
+          <Link
+            to="/services"
+            className="inline-flex items-center gap-2 text-accent font-semibold hover:gap-3 transition-all"
+          >
+            Découvrir notre offre intégrée <ArrowRight size={18} />
+          </Link>
+        </div>
+      </Section>
+
+      {/* VALEUR — APPROVISIONNEMENT (axée acheteurs) */}
+      <Section
+        className="bg-secondary/40"
+        eyebrow="Approvisionnement"
+        title="Un approvisionnement fiable, pensé pour la performance."
+        description="Pour les supermarchés, supérettes, grossistes et détaillants : un partenaire qui sécurise vos rayons et fait tourner votre commerce."
+      >
+        <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr] items-center">
+          <div className="grid gap-5 sm:grid-cols-2">
+            {distributorBenefits.map((b, i) => (
+              <motion.div
+                key={b.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.07 }}
+                className="bg-card border border-border/60 rounded-2xl p-6 shadow-card hover:-translate-y-1 transition-smooth"
+              >
+                <div className="h-11 w-11 rounded-xl bg-accent/15 text-accent flex items-center justify-center mb-4">
+                  <b.icon size={20} />
+                </div>
+                <h3 className="font-display text-base font-bold text-primary">{b.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{b.desc}</p>
+              </motion.div>
+            ))}
           </div>
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -364,6 +310,117 @@ function Home() {
         </div>
       </Section>
 
+      {/* PARTENARIAT — CROISSANCE (axée marques) */}
+      <Section
+        eyebrow="Partenariat"
+        title="Un partenaire stratégique pour votre croissance."
+        description="Pour les usines, marques internationales et nouveaux entrants : un raccourci vers le marché ivoirien, sans compromis sur l'exécution."
+      >
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] items-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="relative order-2 lg:order-1"
+          >
+            <div className="absolute -inset-4 bg-gradient-accent rounded-3xl opacity-20 blur-2xl" />
+            <img
+              src={partnershipImg}
+              alt="L'équipe AL FATEH avec ses partenaires industriels"
+              width={1280}
+              height={896}
+              loading="lazy"
+              className="relative rounded-2xl shadow-elegant w-full"
+            />
+          </motion.div>
+          <div className="grid gap-5 sm:grid-cols-2 order-1 lg:order-2">
+            {brandBenefits.map((b, i) => (
+              <motion.div
+                key={b.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.07 }}
+                className="bg-primary text-primary-foreground rounded-2xl p-6 shadow-card hover:bg-primary-glow transition-smooth"
+              >
+                <div className="h-11 w-11 rounded-xl bg-primary-foreground/10 text-accent-glow flex items-center justify-center mb-4">
+                  <b.icon size={20} />
+                </div>
+                <h3 className="font-display text-base font-bold">{b.title}</h3>
+                <p className="mt-2 text-sm text-primary-foreground/75 leading-relaxed">{b.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+        <div className="mt-10 text-center">
+          <Link
+            to="/partenaires"
+            className="inline-flex items-center gap-2 text-accent font-semibold hover:gap-3 transition-all"
+          >
+            Explorer l'espace partenaires <ArrowRight size={18} />
+          </Link>
+        </div>
+      </Section>
+
+      {/* RÉSEAU TEASER */}
+      <Section
+        className="bg-secondary/40"
+        eyebrow="Notre réseau"
+        title="Une couverture nationale, tous segments retail."
+        description="D'Abidjan aux régions, nous servons chaque jour tous les formats de commerce qui font vivre la consommation ivoirienne."
+      >
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {clientTypes.map((c) => (
+            <div
+              key={c.label}
+              className="bg-card border border-border/60 rounded-2xl p-6 text-center shadow-card hover:-translate-y-1 transition-smooth"
+            >
+              <div className="mx-auto h-12 w-12 rounded-xl bg-primary text-primary-foreground flex items-center justify-center mb-4">
+                <c.icon size={22} />
+              </div>
+              <div className="font-display font-bold text-primary">{c.label}</div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-10 text-center">
+          <Link
+            to="/reseau"
+            className="inline-flex items-center gap-2 text-accent font-semibold hover:gap-3 transition-all"
+          >
+            Voir la couverture territoriale <ArrowRight size={18} />
+          </Link>
+        </div>
+      </Section>
+
+      {/* VISION */}
+      <Section eyebrow="Vision" title="Devenir la référence en Afrique de l'Ouest.">
+        <div className="bg-gradient-hero rounded-3xl p-10 md:p-16 text-primary-foreground shadow-elegant relative overflow-hidden">
+          <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-accent/30 blur-3xl" />
+          <div className="absolute -bottom-24 -left-24 h-80 w-80 rounded-full bg-primary-glow/40 blur-3xl" />
+          <div className="relative grid gap-10 lg:grid-cols-[1.5fr_1fr] items-center">
+            <div>
+              <p className="text-xl md:text-2xl leading-relaxed text-balance">
+                Faire d'AL FATEH le distributeur agroalimentaire de référence en Côte
+                d'Ivoire et, demain, un acteur clé dans toute l'Afrique de l'Ouest.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-primary-foreground/10 backdrop-blur rounded-xl p-5 border border-primary-foreground/15">
+                <MapIcon size={22} className="text-accent-glow mb-2" />
+                <div className="font-display font-bold">Référence CI</div>
+                <div className="text-xs text-primary-foreground/70 mt-1">Aujourd'hui</div>
+              </div>
+              <div className="bg-accent/20 backdrop-blur rounded-xl p-5 border border-accent/30">
+                <Network size={22} className="text-accent-glow mb-2" />
+                <div className="font-display font-bold">Leader régional</div>
+                <div className="text-xs text-primary-foreground/70 mt-1">Demain</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
       {/* TESTIMONIALS */}
       <Section eyebrow="Ils nous font confiance" title="La parole à nos partenaires.">
         <div className="grid gap-6 md:grid-cols-3">
@@ -374,10 +431,13 @@ function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="bg-card border border-border/60 rounded-2xl p-7 shadow-card"
+              className="bg-card border border-border/60 rounded-2xl p-7 shadow-card flex flex-col"
             >
-              <Quote size={28} className="text-accent mb-4" />
-              <blockquote className="text-foreground leading-relaxed">"{t.quote}"</blockquote>
+              <span className="self-start text-[10px] font-semibold uppercase tracking-[0.18em] text-accent bg-accent/10 px-2.5 py-1 rounded-full mb-4">
+                {t.tag}
+              </span>
+              <Quote size={24} className="text-accent mb-3" />
+              <blockquote className="text-foreground leading-relaxed flex-1">"{t.quote}"</blockquote>
               <figcaption className="mt-5 pt-5 border-t border-border/60">
                 <div className="font-display font-bold text-primary">{t.author}</div>
                 <div className="text-sm text-muted-foreground">{t.company}</div>

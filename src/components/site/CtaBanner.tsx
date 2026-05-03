@@ -3,9 +3,9 @@ import { Section } from "@/components/site/Section";
 import { ArrowRight } from "lucide-react";
 
 export function CtaBanner({
-  title = "Prêt à conquérir le marché ivoirien ?",
-  description = "Discutons de votre expansion en Côte d'Ivoire avec un partenaire de confiance.",
-  button = "Devenir partenaire",
+  title = "Rejoignez le hub AL FATEH",
+  description = "Marques, usines, distributeurs, commerçants : connectons votre activité au moteur de la distribution agroalimentaire ivoirienne.",
+  button = "Travailler avec nous",
   to = "/contact" as const,
 }) {
   return (

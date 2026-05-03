@@ -35,7 +35,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "AL FATEH, leader de la distribution en gros agroalimentaire en Côte d'Ivoire. Réseau national, prix usine, plus de 40 ans d'expérience.",
+          "AL FATEH, hub de distribution agroalimentaire en Côte d'Ivoire. Pont entre marques industrielles et réseau retail national, plus de 40 ans d'expertise.",
       },
       { property: "og:title", content: "AL FATEH" },
       {

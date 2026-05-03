@@ -1,49 +1,80 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
-import { Mail, Phone, MapPin, Send, CheckCircle2 } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  CheckCircle2,
+  ShoppingCart,
+  Factory,
+} from "lucide-react";
 import { Section } from "@/components/site/Section";
+import { cn } from "@/lib/utils";
+
+const searchSchema = z.object({
+  type: z.enum(["acheteur", "marque"]).optional().catch(undefined),
+});
 
 export const Route = createFileRoute("/contact")({
+  validateSearch: (search) => searchSchema.parse(search),
   head: () => ({
     meta: [
       { title: "Contact — AL FATEH" },
       {
         name: "description",
         content:
-          "Discutons de votre expansion en Côte d'Ivoire. Contactez l'équipe AL FATEH pour un partenariat de distribution.",
+          "Acheteurs ou marques industrielles : contactez AL FATEH pour rejoindre le hub de distribution agroalimentaire ivoirien.",
       },
       { property: "og:title", content: "Contactez AL FATEH" },
       {
         property: "og:description",
-        content: "Discutons de votre expansion en Côte d'Ivoire.",
+        content: "Connectons votre activité au moteur de la distribution en Côte d'Ivoire.",
       },
     ],
   }),
   component: Contact,
 });
 
-const schema = z.object({
+type Audience = "acheteur" | "marque";
+
+const baseSchema = {
   name: z.string().trim().min(2, "Nom trop court").max(100),
-  company: z.string().trim().min(2, "Entreprise requise").max(150),
   email: z.string().trim().email("Email invalide").max(200),
-  partnership: z.string().min(1, "Veuillez sélectionner un type"),
   message: z.string().trim().min(10, "Message trop court").max(2000),
+};
+
+const buyerSchema = z.object({
+  ...baseSchema,
+  company: z.string().trim().min(2, "Nom du commerce requis").max(150),
+  commerceType: z.string().min(1, "Type de commerce requis"),
+  zone: z.string().trim().min(2, "Zone requise").max(100),
+});
+
+const brandSchema = z.object({
+  ...baseSchema,
+  company: z.string().trim().min(2, "Entreprise requise").max(150),
+  country: z.string().trim().min(2, "Pays requis").max(100),
+  brandType: z.string().min(1, "Type requis"),
 });
 
 function Contact() {
-  const [form, setForm] = useState({
-    name: "",
-    company: "",
-    email: "",
-    partnership: "",
-    message: "",
-  });
+  const { type } = Route.useSearch();
+  const [audience, setAudience] = useState<Audience>(type ?? "acheteur");
+  const [form, setForm] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
 
+  const switchAudience = (a: Audience) => {
+    setAudience(a);
+    setErrors({});
+    setSent(false);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const schema = audience === "acheteur" ? buyerSchema : brandSchema;
     const result = schema.safeParse(form);
     if (!result.success) {
       const errs: Record<string, string> = {};
@@ -55,7 +86,6 @@ function Contact() {
     }
     setErrors({});
     setSent(true);
-    // Form data validated — would be sent to backend in production
   };
 
   const update = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
@@ -69,16 +99,17 @@ function Contact() {
             Contact
           </span>
           <h1 className="mt-4 font-display text-4xl md:text-6xl font-extrabold leading-tight text-balance max-w-3xl">
-            Discutons de votre expansion en Côte d'Ivoire.
+            Connectons votre activité au hub AL FATEH.
           </h1>
           <p className="mt-6 text-lg text-primary-foreground/85 max-w-2xl">
-            Notre équipe vous répond sous 48h ouvrées.
+            Que vous soyez commerçant ou marque industrielle, notre équipe vous répond
+            sous 48h ouvrées.
           </p>
         </div>
       </section>
 
       <Section>
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.5fr]">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
           {/* Info */}
           <div className="space-y-8">
             <div>
@@ -117,9 +148,10 @@ function Contact() {
             </div>
 
             <div className="bg-primary text-primary-foreground rounded-2xl p-7 shadow-card">
-              <h4 className="font-display font-bold text-lg">Vous êtes une usine ?</h4>
+              <h4 className="font-display font-bold text-lg">Réponse rapide</h4>
               <p className="mt-2 text-sm text-primary-foreground/80 leading-relaxed">
-                Nous étudions chaque proposition avec attention. NDA possible sur demande.
+                Nous étudions chaque demande avec attention et revenons vers vous sous
+                48h ouvrées. NDA possible sur demande pour les marques.
               </p>
             </div>
           </div>
@@ -133,84 +165,181 @@ function Contact() {
                   Message envoyé.
                 </h3>
                 <p className="mt-3 text-muted-foreground max-w-md mx-auto">
-                  Merci de votre intérêt. L'équipe AL FATEH vous recontactera sous 48h ouvrées.
+                  {audience === "acheteur"
+                    ? "Merci pour votre intérêt. Notre équipe commerciale vous recontactera sous 48h pour structurer votre approvisionnement."
+                    : "Merci pour votre proposition. Notre équipe partenariats étudie votre dossier et reviendra vers vous sous 48h ouvrées."}
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <Field
-                    label="Nom"
-                    name="name"
-                    value={form.name}
-                    onChange={update}
-                    error={errors.name}
+              <>
+                {/* Audience switcher */}
+                <div className="grid gap-3 sm:grid-cols-2 mb-8">
+                  <AudienceCard
+                    active={audience === "acheteur"}
+                    onClick={() => switchAudience("acheteur")}
+                    icon={<ShoppingCart size={22} />}
+                    title="Je suis acheteur"
+                    desc="Supermarché, supérette, grossiste, détaillant"
                   />
-                  <Field
-                    label="Entreprise"
-                    name="company"
-                    value={form.company}
-                    onChange={update}
-                    error={errors.company}
+                  <AudienceCard
+                    active={audience === "marque"}
+                    onClick={() => switchAudience("marque")}
+                    icon={<Factory size={22} />}
+                    title="Je suis une marque"
+                    desc="Usine, marque internationale, nouvel entrant"
                   />
                 </div>
-                <Field
-                  label="Email professionnel"
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={update}
-                  error={errors.email}
-                />
-                <div>
-                  <label className="block text-sm font-semibold text-foreground mb-2">
-                    Type de partenariat
-                  </label>
-                  <select
-                    value={form.partnership}
-                    onChange={(e) => update("partnership", e.target.value)}
-                    className="w-full h-12 px-4 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth"
+
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <Field
+                      label="Nom complet"
+                      name="name"
+                      value={form.name ?? ""}
+                      onChange={update}
+                      error={errors.name}
+                    />
+                    <Field
+                      label={audience === "acheteur" ? "Nom du commerce" : "Entreprise"}
+                      name="company"
+                      value={form.company ?? ""}
+                      onChange={update}
+                      error={errors.company}
+                    />
+                  </div>
+                  <Field
+                    label="Email professionnel"
+                    type="email"
+                    name="email"
+                    value={form.email ?? ""}
+                    onChange={update}
+                    error={errors.email}
+                  />
+
+                  {audience === "acheteur" ? (
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <SelectField
+                        label="Type de commerce"
+                        name="commerceType"
+                        value={form.commerceType ?? ""}
+                        onChange={update}
+                        error={errors.commerceType}
+                        options={[
+                          { v: "supermarche", l: "Supermarché" },
+                          { v: "superette", l: "Supérette" },
+                          { v: "grossiste", l: "Grossiste" },
+                          { v: "detaillant", l: "Détaillant" },
+                        ]}
+                      />
+                      <Field
+                        label="Zone / Ville"
+                        name="zone"
+                        value={form.zone ?? ""}
+                        onChange={update}
+                        error={errors.zone}
+                      />
+                    </div>
+                  ) : (
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <Field
+                        label="Pays"
+                        name="country"
+                        value={form.country ?? ""}
+                        onChange={update}
+                        error={errors.country}
+                      />
+                      <SelectField
+                        label="Profil"
+                        name="brandType"
+                        value={form.brandType ?? ""}
+                        onChange={update}
+                        error={errors.brandType}
+                        options={[
+                          { v: "usine-locale", l: "Usine locale" },
+                          { v: "marque-internationale", l: "Marque internationale" },
+                          { v: "nouvel-entrant", l: "Nouvel entrant" },
+                        ]}
+                      />
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="block text-sm font-semibold text-foreground mb-2">
+                      {audience === "acheteur"
+                        ? "Vos besoins (catégories, volumes…)"
+                        : "Présentez votre marque (produits, volumes, objectifs…)"}
+                    </label>
+                    <textarea
+                      rows={5}
+                      value={form.message ?? ""}
+                      maxLength={2000}
+                      onChange={(e) => update("message", e.target.value)}
+                      className="w-full px-4 py-3 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth resize-none"
+                      placeholder={
+                        audience === "acheteur"
+                          ? "Ex: Approvisionnement régulier en produits secs, 2 livraisons / semaine sur Abidjan…"
+                          : "Ex: Marque de boissons, présence souhaitée sur l'ensemble du territoire…"
+                      }
+                    />
+                    {errors.message && (
+                      <p className="mt-1.5 text-sm text-destructive">{errors.message}</p>
+                    )}
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md bg-primary px-8 py-4 text-base font-semibold text-primary-foreground hover:bg-primary-glow transition-smooth shadow-card"
                   >
-                    <option value="">Sélectionner…</option>
-                    <option value="usine">Usine / Industriel</option>
-                    <option value="marque-internationale">Marque internationale</option>
-                    <option value="nouveau-entrant">Nouveau entrant marché ivoirien</option>
-                    <option value="distribution-exclusive">Distribution exclusive</option>
-                    <option value="autre">Autre</option>
-                  </select>
-                  {errors.partnership && (
-                    <p className="mt-1.5 text-sm text-destructive">{errors.partnership}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-foreground mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    rows={5}
-                    value={form.message}
-                    maxLength={2000}
-                    onChange={(e) => update("message", e.target.value)}
-                    className="w-full px-4 py-3 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth resize-none"
-                    placeholder="Présentez-nous votre projet, vos produits, vos volumes…"
-                  />
-                  {errors.message && (
-                    <p className="mt-1.5 text-sm text-destructive">{errors.message}</p>
-                  )}
-                </div>
-                <button
-                  type="submit"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md bg-primary px-8 py-4 text-base font-semibold text-primary-foreground hover:bg-primary-glow transition-smooth shadow-card"
-                >
-                  Envoyer ma demande
-                  <Send size={18} />
-                </button>
-              </form>
+                    {audience === "acheteur"
+                      ? "Devenir client AL FATEH"
+                      : "Proposer un partenariat"}
+                    <Send size={18} />
+                  </button>
+                </form>
+              </>
             )}
           </div>
         </div>
       </Section>
     </>
+  );
+}
+
+function AudienceCard({
+  active,
+  onClick,
+  icon,
+  title,
+  desc,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+  title: string;
+  desc: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "text-left rounded-xl border-2 p-5 transition-smooth",
+        active
+          ? "border-accent bg-accent/5 shadow-card"
+          : "border-border/60 bg-background hover:border-accent/50",
+      )}
+    >
+      <div
+        className={cn(
+          "h-11 w-11 rounded-lg flex items-center justify-center mb-3 transition-smooth",
+          active ? "bg-accent text-accent-foreground" : "bg-secondary text-primary",
+        )}
+      >
+        {icon}
+      </div>
+      <div className="font-display font-bold text-primary">{title}</div>
+      <div className="text-xs text-muted-foreground mt-1">{desc}</div>
+    </button>
   );
 }
 
@@ -239,6 +368,41 @@ function Field({
         onChange={(e) => onChange(name, e.target.value)}
         className="w-full h-12 px-4 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth"
       />
+      {error && <p className="mt-1.5 text-sm text-destructive">{error}</p>}
+    </div>
+  );
+}
+
+function SelectField({
+  label,
+  name,
+  value,
+  onChange,
+  error,
+  options,
+}: {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (k: string, v: string) => void;
+  error?: string;
+  options: { v: string; l: string }[];
+}) {
+  return (
+    <div>
+      <label className="block text-sm font-semibold text-foreground mb-2">{label}</label>
+      <select
+        value={value}
+        onChange={(e) => onChange(name, e.target.value)}
+        className="w-full h-12 px-4 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth"
+      >
+        <option value="">Sélectionner…</option>
+        {options.map((o) => (
+          <option key={o.v} value={o.v}>
+            {o.l}
+          </option>
+        ))}
+      </select>
       {error && <p className="mt-1.5 text-sm text-destructive">{error}</p>}
     </div>
   );
