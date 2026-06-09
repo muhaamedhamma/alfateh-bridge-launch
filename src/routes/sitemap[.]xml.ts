@@ -16,6 +16,7 @@ const entries: SitemapEntry[] = [
   { path: "/reseau", changefreq: "monthly", priority: "0.8" },
   { path: "/partenaires", changefreq: "monthly", priority: "0.9" },
   { path: "/contact", changefreq: "monthly", priority: "0.7" },
+  { path: "/blog/destockage-alimentaire-cote-divoire", changefreq: "monthly", priority: "0.8" },
 ];
 
 export const Route = createFileRoute("/sitemap.xml")({
