@@ -342,17 +342,66 @@ function Field({
   onChange: (k: string, v: string) => void;
   error?: string;
 }) {
+  const id = useId();
+  const errorId = `${id}-error`;
   return (
     <div>
-      <label className="block text-sm font-semibold text-foreground mb-2">{label}</label>
+      <label htmlFor={id} className="block text-sm font-semibold text-foreground mb-2">
+        {label}
+      </label>
       <input
+        id={id}
+        name={name}
         type={type}
         value={value}
         maxLength={250}
+        aria-invalid={!!error}
+        aria-describedby={error ? errorId : undefined}
         onChange={(e) => onChange(name, e.target.value)}
         className="w-full h-12 px-4 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth"
       />
-      {error && <p className="mt-1.5 text-sm text-destructive">{error}</p>}
+      {error && <p id={errorId} className="mt-1.5 text-sm text-destructive">{error}</p>}
+    </div>
+  );
+}
+
+function MessageField({
+  audience,
+  value,
+  onChange,
+  error,
+}: {
+  audience: Audience;
+  value: string;
+  onChange: (v: string) => void;
+  error?: string;
+}) {
+  const id = useId();
+  const errorId = `${id}-error`;
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-semibold text-foreground mb-2">
+        {audience === "acheteur"
+          ? "Vos besoins (catégories, volumes…)"
+          : "Présentez votre marque (produits, volumes, objectifs…)"}
+      </label>
+      <textarea
+        id={id}
+        name="message"
+        rows={5}
+        value={value}
+        maxLength={2000}
+        aria-invalid={!!error}
+        aria-describedby={error ? errorId : undefined}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full px-4 py-3 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth resize-none"
+        placeholder={
+          audience === "acheteur"
+            ? "Ex: Approvisionnement régulier en produits secs, 2 livraisons / semaine sur Abidjan…"
+            : "Ex: Marque de boissons, présence souhaitée sur l'ensemble du territoire…"
+        }
+      />
+      {error && <p id={errorId} className="mt-1.5 text-sm text-destructive">{error}</p>}
     </div>
   );
 }
