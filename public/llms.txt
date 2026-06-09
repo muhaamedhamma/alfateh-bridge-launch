@@ -1,0 +1,12 @@
+# AL FATEH
+
+> AL FATEH est un hub stratégique de distribution agroalimentaire en Côte d'Ivoire, reliant marques et usines industrielles aux supermarchés, supérettes, grossistes et détaillants à travers un réseau national structuré.
+
+## Pages
+
+- [Accueil](/): Présentation d'AL FATEH, le moteur de la distribution agroalimentaire en Côte d'Ivoire.
+- [À propos](/about): Histoire, mission et vision d'AL FATEH.
+- [Services](/services): Offre intégrée de distribution, logistique et développement commercial.
+- [Réseau](/reseau): Couverture territoriale nationale et types de points de vente desservis.
+- [Partenaires](/partenaires): Espace dédié aux marques, usines et nouveaux entrants souhaitant accéder au marché ivoirien.
+- [Contact](/contact): Formulaire de contact pour acheteurs et marques industrielles.

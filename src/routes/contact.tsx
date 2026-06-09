@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { z } from "zod";
 import {
   Mail,
@@ -113,9 +113,9 @@ function Contact() {
           {/* Info */}
           <div className="space-y-8">
             <div>
-              <h3 className="font-display text-xl font-bold text-primary mb-4">
+              <h2 className="font-display text-xl font-bold text-primary mb-4">
                 Nos coordonnées
-              </h3>
+              </h2>
               <ul className="space-y-5">
                 <li className="flex gap-4">
                   <div className="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center text-primary shrink-0">
@@ -263,28 +263,12 @@ function Contact() {
                     </div>
                   )}
 
-                  <div>
-                    <label className="block text-sm font-semibold text-foreground mb-2">
-                      {audience === "acheteur"
-                        ? "Vos besoins (catégories, volumes…)"
-                        : "Présentez votre marque (produits, volumes, objectifs…)"}
-                    </label>
-                    <textarea
-                      rows={5}
-                      value={form.message ?? ""}
-                      maxLength={2000}
-                      onChange={(e) => update("message", e.target.value)}
-                      className="w-full px-4 py-3 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth resize-none"
-                      placeholder={
-                        audience === "acheteur"
-                          ? "Ex: Approvisionnement régulier en produits secs, 2 livraisons / semaine sur Abidjan…"
-                          : "Ex: Marque de boissons, présence souhaitée sur l'ensemble du territoire…"
-                      }
-                    />
-                    {errors.message && (
-                      <p className="mt-1.5 text-sm text-destructive">{errors.message}</p>
-                    )}
-                  </div>
+                  <MessageField
+                    audience={audience}
+                    value={form.message ?? ""}
+                    onChange={(v) => update("message", v)}
+                    error={errors.message}
+                  />
 
                   <button
                     type="submit"
@@ -358,17 +342,66 @@ function Field({
   onChange: (k: string, v: string) => void;
   error?: string;
 }) {
+  const id = useId();
+  const errorId = `${id}-error`;
   return (
     <div>
-      <label className="block text-sm font-semibold text-foreground mb-2">{label}</label>
+      <label htmlFor={id} className="block text-sm font-semibold text-foreground mb-2">
+        {label}
+      </label>
       <input
+        id={id}
+        name={name}
         type={type}
         value={value}
         maxLength={250}
+        aria-invalid={!!error}
+        aria-describedby={error ? errorId : undefined}
         onChange={(e) => onChange(name, e.target.value)}
         className="w-full h-12 px-4 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth"
       />
-      {error && <p className="mt-1.5 text-sm text-destructive">{error}</p>}
+      {error && <p id={errorId} className="mt-1.5 text-sm text-destructive">{error}</p>}
+    </div>
+  );
+}
+
+function MessageField({
+  audience,
+  value,
+  onChange,
+  error,
+}: {
+  audience: Audience;
+  value: string;
+  onChange: (v: string) => void;
+  error?: string;
+}) {
+  const id = useId();
+  const errorId = `${id}-error`;
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-semibold text-foreground mb-2">
+        {audience === "acheteur"
+          ? "Vos besoins (catégories, volumes…)"
+          : "Présentez votre marque (produits, volumes, objectifs…)"}
+      </label>
+      <textarea
+        id={id}
+        name="message"
+        rows={5}
+        value={value}
+        maxLength={2000}
+        aria-invalid={!!error}
+        aria-describedby={error ? errorId : undefined}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full px-4 py-3 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth resize-none"
+        placeholder={
+          audience === "acheteur"
+            ? "Ex: Approvisionnement régulier en produits secs, 2 livraisons / semaine sur Abidjan…"
+            : "Ex: Marque de boissons, présence souhaitée sur l'ensemble du territoire…"
+        }
+      />
+      {error && <p id={errorId} className="mt-1.5 text-sm text-destructive">{error}</p>}
     </div>
   );
 }
@@ -388,11 +421,19 @@ function SelectField({
   error?: string;
   options: { v: string; l: string }[];
 }) {
+  const id = useId();
+  const errorId = `${id}-error`;
   return (
     <div>
-      <label className="block text-sm font-semibold text-foreground mb-2">{label}</label>
+      <label htmlFor={id} className="block text-sm font-semibold text-foreground mb-2">
+        {label}
+      </label>
       <select
+        id={id}
+        name={name}
         value={value}
+        aria-invalid={!!error}
+        aria-describedby={error ? errorId : undefined}
         onChange={(e) => onChange(name, e.target.value)}
         className="w-full h-12 px-4 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth"
       >
@@ -403,7 +444,7 @@ function SelectField({
           </option>
         ))}
       </select>
-      {error && <p className="mt-1.5 text-sm text-destructive">{error}</p>}
+      {error && <p id={errorId} className="mt-1.5 text-sm text-destructive">{error}</p>}
     </div>
   );
 }
