@@ -16,6 +16,7 @@ import { Route as PartenairesRouteImport } from './routes/partenaires'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogDestockageAlimentaireCoteDivoireRouteImport } from './routes/blog.destockage-alimentaire-cote-divoire'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -52,6 +53,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogDestockageAlimentaireCoteDivoireRoute =
+  BlogDestockageAlimentaireCoteDivoireRouteImport.update({
+    id: '/blog/destockage-alimentaire-cote-divoire',
+    path: '/blog/destockage-alimentaire-cote-divoire',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +68,7 @@ export interface FileRoutesByFullPath {
   '/reseau': typeof ReseauRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/blog/destockage-alimentaire-cote-divoire': typeof BlogDestockageAlimentaireCoteDivoireRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +78,7 @@ export interface FileRoutesByTo {
   '/reseau': typeof ReseauRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/blog/destockage-alimentaire-cote-divoire': typeof BlogDestockageAlimentaireCoteDivoireRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +89,7 @@ export interface FileRoutesById {
   '/reseau': typeof ReseauRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/blog/destockage-alimentaire-cote-divoire': typeof BlogDestockageAlimentaireCoteDivoireRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +101,7 @@ export interface FileRouteTypes {
     | '/reseau'
     | '/services'
     | '/sitemap.xml'
+    | '/blog/destockage-alimentaire-cote-divoire'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +111,7 @@ export interface FileRouteTypes {
     | '/reseau'
     | '/services'
     | '/sitemap.xml'
+    | '/blog/destockage-alimentaire-cote-divoire'
   id:
     | '__root__'
     | '/'
@@ -109,6 +121,7 @@ export interface FileRouteTypes {
     | '/reseau'
     | '/services'
     | '/sitemap.xml'
+    | '/blog/destockage-alimentaire-cote-divoire'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,6 +132,7 @@ export interface RootRouteChildren {
   ReseauRoute: typeof ReseauRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  BlogDestockageAlimentaireCoteDivoireRoute: typeof BlogDestockageAlimentaireCoteDivoireRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/destockage-alimentaire-cote-divoire': {
+      id: '/blog/destockage-alimentaire-cote-divoire'
+      path: '/blog/destockage-alimentaire-cote-divoire'
+      fullPath: '/blog/destockage-alimentaire-cote-divoire'
+      preLoaderRoute: typeof BlogDestockageAlimentaireCoteDivoireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -183,7 +204,18 @@ const rootRouteChildren: RootRouteChildren = {
   ReseauRoute: ReseauRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  BlogDestockageAlimentaireCoteDivoireRoute:
+    BlogDestockageAlimentaireCoteDivoireRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
