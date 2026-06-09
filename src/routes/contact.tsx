@@ -263,28 +263,12 @@ function Contact() {
                     </div>
                   )}
 
-                  <div>
-                    <label className="block text-sm font-semibold text-foreground mb-2">
-                      {audience === "acheteur"
-                        ? "Vos besoins (catégories, volumes…)"
-                        : "Présentez votre marque (produits, volumes, objectifs…)"}
-                    </label>
-                    <textarea
-                      rows={5}
-                      value={form.message ?? ""}
-                      maxLength={2000}
-                      onChange={(e) => update("message", e.target.value)}
-                      className="w-full px-4 py-3 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth resize-none"
-                      placeholder={
-                        audience === "acheteur"
-                          ? "Ex: Approvisionnement régulier en produits secs, 2 livraisons / semaine sur Abidjan…"
-                          : "Ex: Marque de boissons, présence souhaitée sur l'ensemble du territoire…"
-                      }
-                    />
-                    {errors.message && (
-                      <p className="mt-1.5 text-sm text-destructive">{errors.message}</p>
-                    )}
-                  </div>
+                  <MessageField
+                    audience={audience}
+                    value={form.message ?? ""}
+                    onChange={(v) => update("message", v)}
+                    error={errors.message}
+                  />
 
                   <button
                     type="submit"
