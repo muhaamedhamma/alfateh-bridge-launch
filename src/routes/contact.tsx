@@ -421,11 +421,19 @@ function SelectField({
   error?: string;
   options: { v: string; l: string }[];
 }) {
+  const id = useId();
+  const errorId = `${id}-error`;
   return (
     <div>
-      <label className="block text-sm font-semibold text-foreground mb-2">{label}</label>
+      <label htmlFor={id} className="block text-sm font-semibold text-foreground mb-2">
+        {label}
+      </label>
       <select
+        id={id}
+        name={name}
         value={value}
+        aria-invalid={!!error}
+        aria-describedby={error ? errorId : undefined}
         onChange={(e) => onChange(name, e.target.value)}
         className="w-full h-12 px-4 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth"
       >
@@ -436,7 +444,7 @@ function SelectField({
           </option>
         ))}
       </select>
-      {error && <p className="mt-1.5 text-sm text-destructive">{error}</p>}
+      {error && <p id={errorId} className="mt-1.5 text-sm text-destructive">{error}</p>}
     </div>
   );
 }
