@@ -113,9 +113,9 @@ function Contact() {
           {/* Info */}
           <div className="space-y-8">
             <div>
-              <h3 className="font-display text-xl font-bold text-primary mb-4">
+              <h2 className="font-display text-xl font-bold text-primary mb-4">
                 Nos coordonnées
-              </h3>
+              </h2>
               <ul className="space-y-5">
                 <li className="flex gap-4">
                   <div className="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center text-primary shrink-0">
