@@ -1,24 +1,24 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { I18nProvider, useT } from "@/i18n/I18nProvider";
 
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
+  const t = useT();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page introuvable</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Cette page n'existe pas ou a été déplacée.
-        </p>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">{t.notFound.title}</h2>
+        <p className="mt-2 text-sm text-muted-foreground">{t.notFound.desc}</p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Retour à l'accueil
+            {t.notFound.back}
           </Link>
         </div>
       </div>
@@ -90,12 +90,14 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-      <main className="flex-1">
-        <Outlet />
-      </main>
-      <Footer />
-    </div>
+    <I18nProvider>
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <main className="flex-1">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+    </I18nProvider>
   );
 }
