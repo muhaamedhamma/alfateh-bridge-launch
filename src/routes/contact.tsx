@@ -1,17 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { z } from "zod";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Send,
-  CheckCircle2,
-  ShoppingCart,
-  Factory,
-} from "lucide-react";
+import { Mail, Phone, MapPin, Send, CheckCircle2, ShoppingCart, Factory } from "lucide-react";
 import { Section } from "@/components/site/Section";
 import { cn } from "@/lib/utils";
+import { useT } from "@/i18n/I18nProvider";
+import type { Dict } from "@/i18n/dictionary";
 
 const searchSchema = z.object({
   type: z.enum(["acheteur", "marque"]).optional().catch(undefined),
@@ -39,28 +33,31 @@ export const Route = createFileRoute("/contact")({
 
 type Audience = "acheteur" | "marque";
 
-const baseSchema = {
-  name: z.string().trim().min(2, "Nom trop court").max(100),
-  email: z.string().trim().email("Email invalide").max(200),
-  message: z.string().trim().min(10, "Message trop court").max(2000),
-};
-
-const buyerSchema = z.object({
-  ...baseSchema,
-  company: z.string().trim().min(2, "Nom du commerce requis").max(150),
-  commerceType: z.string().min(1, "Type de commerce requis"),
-  zone: z.string().trim().min(2, "Zone requise").max(100),
-});
-
-const brandSchema = z.object({
-  ...baseSchema,
-  company: z.string().trim().min(2, "Entreprise requise").max(150),
-  country: z.string().trim().min(2, "Pays requis").max(100),
-  brandType: z.string().min(1, "Type requis"),
-});
+function makeSchemas(t: Dict) {
+  const e = t.contact.errors;
+  const base = {
+    name: z.string().trim().min(2, e.nameShort).max(100),
+    email: z.string().trim().email(e.emailInvalid).max(200),
+    message: z.string().trim().min(10, e.messageShort).max(2000),
+  };
+  const buyerSchema = z.object({
+    ...base,
+    company: z.string().trim().min(2, e.shopRequired).max(150),
+    commerceType: z.string().min(1, e.commerceRequired),
+    zone: z.string().trim().min(2, e.zoneRequired).max(100),
+  });
+  const brandSchema = z.object({
+    ...base,
+    company: z.string().trim().min(2, e.companyRequired).max(150),
+    country: z.string().trim().min(2, e.countryRequired).max(100),
+    brandType: z.string().min(1, e.typeRequired),
+  });
+  return { buyerSchema, brandSchema };
+}
 
 function Contact() {
   const { type } = Route.useSearch();
+  const t = useT();
   const [audience, setAudience] = useState<Audience>(type ?? "acheteur");
   const [form, setForm] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -74,6 +71,7 @@ function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const { buyerSchema, brandSchema } = makeSchemas(t);
     const schema = audience === "acheteur" ? buyerSchema : brandSchema;
     const result = schema.safeParse(form);
     if (!result.success) {
@@ -89,6 +87,7 @@ function Contact() {
   };
 
   const update = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
+  const tc = t.contact;
 
   return (
     <>
@@ -96,33 +95,27 @@ function Contact() {
         <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-accent/30 blur-3xl" />
         <div className="container-pro relative">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-glow">
-            Contact
+            {tc.eyebrow}
           </span>
           <h1 className="mt-4 font-display text-4xl md:text-6xl font-extrabold leading-tight text-balance max-w-3xl">
-            Connectons votre activité au hub AL FATEH.
+            {tc.title}
           </h1>
-          <p className="mt-6 text-lg text-primary-foreground/85 max-w-2xl">
-            Que vous soyez commerçant ou marque industrielle, notre équipe vous répond
-            sous 48h ouvrées.
-          </p>
+          <p className="mt-6 text-lg text-primary-foreground/85 max-w-2xl">{tc.sub}</p>
         </div>
       </section>
 
       <Section>
         <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
-          {/* Info */}
           <div className="space-y-8">
             <div>
-              <h2 className="font-display text-xl font-bold text-primary mb-4">
-                Nos coordonnées
-              </h2>
+              <h2 className="font-display text-xl font-bold text-primary mb-4">{tc.coordinates}</h2>
               <ul className="space-y-5">
                 <li className="flex gap-4">
                   <div className="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center text-primary shrink-0">
                     <MapPin size={18} />
                   </div>
                   <div>
-                    <div className="font-semibold text-foreground">Siège</div>
+                    <div className="font-semibold text-foreground">{tc.head}</div>
                     <div className="text-muted-foreground text-sm">Abidjan, Côte d'Ivoire</div>
                   </div>
                 </li>
@@ -131,7 +124,7 @@ function Contact() {
                     <Mail size={18} />
                   </div>
                   <div>
-                    <div className="font-semibold text-foreground">Email</div>
+                    <div className="font-semibold text-foreground">{tc.email}</div>
                     <div className="text-muted-foreground text-sm">contact@alfateh.ci</div>
                   </div>
                 </li>
@@ -140,7 +133,7 @@ function Contact() {
                     <Phone size={18} />
                   </div>
                   <div>
-                    <div className="font-semibold text-foreground">Téléphone</div>
+                    <div className="font-semibold text-foreground">{tc.phone}</div>
                     <div className="text-muted-foreground text-sm">+225 27 00 00 00 00</div>
                   </div>
                 </li>
@@ -148,59 +141,44 @@ function Contact() {
             </div>
 
             <div className="bg-primary text-primary-foreground rounded-2xl p-7 shadow-card">
-              <h4 className="font-display font-bold text-lg">Réponse rapide</h4>
-              <p className="mt-2 text-sm text-primary-foreground/80 leading-relaxed">
-                Nous étudions chaque demande avec attention et revenons vers vous sous
-                48h ouvrées. NDA possible sur demande pour les marques.
-              </p>
+              <h4 className="font-display font-bold text-lg">{tc.quickTitle}</h4>
+              <p className="mt-2 text-sm text-primary-foreground/80 leading-relaxed">{tc.quickDesc}</p>
             </div>
           </div>
 
-          {/* Form */}
           <div className="bg-card border border-border/60 rounded-2xl p-8 md:p-10 shadow-card">
             {sent ? (
               <div className="text-center py-12">
                 <CheckCircle2 size={56} className="mx-auto text-accent mb-5" />
-                <h3 className="font-display text-2xl font-extrabold text-primary">
-                  Message envoyé.
-                </h3>
+                <h3 className="font-display text-2xl font-extrabold text-primary">{tc.sentTitle}</h3>
                 <p className="mt-3 text-muted-foreground max-w-md mx-auto">
-                  {audience === "acheteur"
-                    ? "Merci pour votre intérêt. Notre équipe commerciale vous recontactera sous 48h pour structurer votre approvisionnement."
-                    : "Merci pour votre proposition. Notre équipe partenariats étudie votre dossier et reviendra vers vous sous 48h ouvrées."}
+                  {audience === "acheteur" ? tc.sentBuyer : tc.sentBrand}
                 </p>
               </div>
             ) : (
               <>
-                {/* Audience switcher */}
                 <div className="grid gap-3 sm:grid-cols-2 mb-8">
                   <AudienceCard
                     active={audience === "acheteur"}
                     onClick={() => switchAudience("acheteur")}
                     icon={<ShoppingCart size={22} />}
-                    title="Je suis acheteur"
-                    desc="Supermarché, supérette, grossiste, détaillant"
+                    title={tc.buyerCard.title}
+                    desc={tc.buyerCard.desc}
                   />
                   <AudienceCard
                     active={audience === "marque"}
                     onClick={() => switchAudience("marque")}
                     icon={<Factory size={22} />}
-                    title="Je suis une marque"
-                    desc="Usine, marque internationale, nouvel entrant"
+                    title={tc.brandCard.title}
+                    desc={tc.brandCard.desc}
                   />
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="grid gap-5 sm:grid-cols-2">
+                    <Field label={tc.fields.name} name="name" value={form.name ?? ""} onChange={update} error={errors.name} />
                     <Field
-                      label="Nom complet"
-                      name="name"
-                      value={form.name ?? ""}
-                      onChange={update}
-                      error={errors.name}
-                    />
-                    <Field
-                      label={audience === "acheteur" ? "Nom du commerce" : "Entreprise"}
+                      label={audience === "acheteur" ? tc.fields.shopName : tc.fields.company}
                       name="company"
                       value={form.company ?? ""}
                       onChange={update}
@@ -208,7 +186,7 @@ function Contact() {
                     />
                   </div>
                   <Field
-                    label="Email professionnel"
+                    label={tc.fields.emailPro}
                     type="email"
                     name="email"
                     value={form.email ?? ""}
@@ -219,52 +197,40 @@ function Contact() {
                   {audience === "acheteur" ? (
                     <div className="grid gap-5 sm:grid-cols-2">
                       <SelectField
-                        label="Type de commerce"
+                        label={tc.fields.commerceType}
                         name="commerceType"
                         value={form.commerceType ?? ""}
                         onChange={update}
                         error={errors.commerceType}
-                        options={[
-                          { v: "supermarche", l: "Supermarché" },
-                          { v: "superette", l: "Supérette" },
-                          { v: "grossiste", l: "Grossiste" },
-                          { v: "detaillant", l: "Détaillant" },
-                        ]}
+                        options={tc.commerceOptions}
+                        selectLabel={tc.fields.select}
                       />
-                      <Field
-                        label="Zone / Ville"
-                        name="zone"
-                        value={form.zone ?? ""}
-                        onChange={update}
-                        error={errors.zone}
-                      />
+                      <Field label={tc.fields.zone} name="zone" value={form.zone ?? ""} onChange={update} error={errors.zone} />
                     </div>
                   ) : (
                     <div className="grid gap-5 sm:grid-cols-2">
                       <Field
-                        label="Pays"
+                        label={tc.fields.country}
                         name="country"
                         value={form.country ?? ""}
                         onChange={update}
                         error={errors.country}
                       />
                       <SelectField
-                        label="Profil"
+                        label={tc.fields.profile}
                         name="brandType"
                         value={form.brandType ?? ""}
                         onChange={update}
                         error={errors.brandType}
-                        options={[
-                          { v: "usine-locale", l: "Usine locale" },
-                          { v: "marque-internationale", l: "Marque internationale" },
-                          { v: "nouvel-entrant", l: "Nouvel entrant" },
-                        ]}
+                        options={tc.brandOptions}
+                        selectLabel={tc.fields.select}
                       />
                     </div>
                   )}
 
                   <MessageField
-                    audience={audience}
+                    label={audience === "acheteur" ? tc.fields.messageBuyer : tc.fields.messageBrand}
+                    placeholder={audience === "acheteur" ? tc.fields.placeholderBuyer : tc.fields.placeholderBrand}
                     value={form.message ?? ""}
                     onChange={(v) => update("message", v)}
                     error={errors.message}
@@ -274,9 +240,7 @@ function Contact() {
                     type="submit"
                     className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md bg-primary px-8 py-4 text-base font-semibold text-primary-foreground hover:bg-primary-glow transition-smooth shadow-card"
                   >
-                    {audience === "acheteur"
-                      ? "Devenir client AL FATEH"
-                      : "Proposer un partenariat"}
+                    {audience === "acheteur" ? tc.submitBuyer : tc.submitBrand}
                     <Send size={18} />
                   </button>
                 </form>
@@ -308,9 +272,7 @@ function AudienceCard({
       onClick={onClick}
       className={cn(
         "text-left rounded-xl border-2 p-5 transition-smooth",
-        active
-          ? "border-accent bg-accent/5 shadow-card"
-          : "border-border/60 bg-background hover:border-accent/50",
+        active ? "border-accent bg-accent/5 shadow-card" : "border-border/60 bg-background hover:border-accent/50",
       )}
     >
       <div
@@ -366,12 +328,14 @@ function Field({
 }
 
 function MessageField({
-  audience,
+  label,
+  placeholder,
   value,
   onChange,
   error,
 }: {
-  audience: Audience;
+  label: string;
+  placeholder: string;
   value: string;
   onChange: (v: string) => void;
   error?: string;
@@ -381,9 +345,7 @@ function MessageField({
   return (
     <div>
       <label htmlFor={id} className="block text-sm font-semibold text-foreground mb-2">
-        {audience === "acheteur"
-          ? "Vos besoins (catégories, volumes…)"
-          : "Présentez votre marque (produits, volumes, objectifs…)"}
+        {label}
       </label>
       <textarea
         id={id}
@@ -395,11 +357,7 @@ function MessageField({
         aria-describedby={error ? errorId : undefined}
         onChange={(e) => onChange(e.target.value)}
         className="w-full px-4 py-3 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth resize-none"
-        placeholder={
-          audience === "acheteur"
-            ? "Ex: Approvisionnement régulier en produits secs, 2 livraisons / semaine sur Abidjan…"
-            : "Ex: Marque de boissons, présence souhaitée sur l'ensemble du territoire…"
-        }
+        placeholder={placeholder}
       />
       {error && <p id={errorId} className="mt-1.5 text-sm text-destructive">{error}</p>}
     </div>
@@ -413,13 +371,15 @@ function SelectField({
   onChange,
   error,
   options,
+  selectLabel,
 }: {
   label: string;
   name: string;
   value: string;
   onChange: (k: string, v: string) => void;
   error?: string;
-  options: { v: string; l: string }[];
+  options: ReadonlyArray<{ v: string; l: string }>;
+  selectLabel: string;
 }) {
   const id = useId();
   const errorId = `${id}-error`;
@@ -437,7 +397,7 @@ function SelectField({
         onChange={(e) => onChange(name, e.target.value)}
         className="w-full h-12 px-4 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-smooth"
       >
-        <option value="">Sélectionner…</option>
+        <option value="">{selectLabel}</option>
         {options.map((o) => (
           <option key={o.v} value={o.v}>
             {o.l}
