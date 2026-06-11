@@ -1,14 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
 import { CtaBanner } from "@/components/site/CtaBanner";
-import {
-  Truck,
-  Factory,
-  TrendingUp,
-  Boxes,
-  Map,
-  HeadphonesIcon,
-} from "lucide-react";
+import { Truck, Factory, TrendingUp, Boxes, Map, HeadphonesIcon } from "lucide-react";
+import { useT } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -29,46 +23,11 @@ export const Route = createFileRoute("/services")({
   component: Services,
 });
 
-const services = [
-  {
-    icon: Truck,
-    title: "Distribution en gros",
-    desc: "Notre cœur de métier : acheminer vos produits jusqu'au point de vente final, partout en Côte d'Ivoire.",
-    features: ["Flotte logistique dédiée", "Couverture nationale", "Délais maîtrisés"],
-  },
-  {
-    icon: Boxes,
-    title: "Approvisionnement continu",
-    desc: "Stocks tampons, planification fine et réactivité : vos clients ne connaissent jamais la rupture.",
-    features: ["Gestion prédictive", "Stocks stratégiques", "Réassort 24/7"],
-  },
-  {
-    icon: Factory,
-    title: "Accès prix usine",
-    desc: "Grâce à nos partenariats industriels directs, vous bénéficiez d'une compétitivité tarifaire imbattable.",
-    features: ["Négociation directe", "Volumes massifs", "Marges optimisées"],
-  },
-  {
-    icon: TrendingUp,
-    title: "Développement de marques",
-    desc: "Nous accompagnons les marques internationales dans leur lancement et leur croissance sur le marché ivoirien.",
-    features: ["Étude de marché", "Plan de lancement", "Force de vente"],
-  },
-  {
-    icon: Map,
-    title: "Logistique nationale",
-    desc: "D'Abidjan aux régions, notre maillage logistique garantit une livraison fiable et rapide.",
-    features: ["Hubs régionaux", "Traçabilité totale", "Chaîne du froid"],
-  },
-  {
-    icon: HeadphonesIcon,
-    title: "Support partenaires",
-    desc: "Une équipe dédiée pour piloter votre activité et fluidifier la relation au quotidien.",
-    features: ["Account manager", "Reporting régulier", "Disponibilité 6j/7"],
-  },
-];
+const serviceIcons = [Truck, Boxes, Factory, TrendingUp, Map, HeadphonesIcon];
 
 function Services() {
+  const t = useT();
+  const services = t.services.items.map((s, i) => ({ ...s, icon: serviceIcons[i] }));
   return (
     <>
       <section className="relative bg-gradient-hero text-primary-foreground py-24 md:py-32 overflow-hidden">
@@ -77,14 +36,13 @@ function Services() {
         </div>
         <div className="container-pro relative">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-glow">
-            Nos services
+            {t.services.eyebrow}
           </span>
           <h1 className="mt-4 font-display text-4xl md:text-6xl font-extrabold leading-tight text-balance max-w-3xl">
-            Une offre intégrée, pensée pour vos ambitions de croissance.
+            {t.services.title}
           </h1>
           <p className="mt-6 text-lg text-primary-foreground/85 max-w-2xl leading-relaxed">
-            De la sortie d'usine au consommateur final, nous orchestrons toute la chaîne
-            de valeur avec exigence et précision.
+            {t.services.sub}
           </p>
         </div>
       </section>

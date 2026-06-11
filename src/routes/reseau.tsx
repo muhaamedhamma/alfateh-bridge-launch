@@ -3,6 +3,7 @@ import { Section } from "@/components/site/Section";
 import { CtaBanner } from "@/components/site/CtaBanner";
 import networkImg from "@/assets/network-trucks.jpg";
 import { Store, ShoppingBag, Building2, Users } from "lucide-react";
+import { useT } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/reseau")({
   head: () => ({
@@ -35,14 +36,11 @@ const regions = [
   { name: "Gagnoa", level: 78 },
 ];
 
-const clients = [
-  { icon: Building2, title: "Supermarchés", desc: "Grandes surfaces et chaînes nationales." },
-  { icon: Store, title: "Supérettes", desc: "Réseau de proximité urbain et péri-urbain." },
-  { icon: ShoppingBag, title: "Grossistes", desc: "Partenaires de redistribution régionale." },
-  { icon: Users, title: "Détaillants", desc: "Boutiques de quartier et marchés locaux." },
-];
+const clientIcons = [Building2, Store, ShoppingBag, Users];
 
 function Network() {
+  const t = useT();
+  const clients = t.network.clients.map((c, i) => ({ ...c, icon: clientIcons[i] }));
   return (
     <>
       <section className="relative min-h-[70vh] flex items-center overflow-hidden">
@@ -53,24 +51,21 @@ function Network() {
         <div className="container-pro relative py-24 text-primary-foreground">
           <div className="max-w-3xl">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-glow">
-              Notre réseau
+              {t.network.eyebrow}
             </span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-extrabold leading-tight text-balance">
-              Une couverture nationale, du nord au sud.
+              {t.network.title}
             </h1>
             <p className="mt-6 text-lg text-primary-foreground/85 max-w-2xl leading-relaxed">
-              D'Abidjan à Korhogo, de Bouaké à San Pedro : nos camions sillonnent
-              chaque jour les routes ivoiriennes pour servir un réseau de centaines
-              de points de vente.
+              {t.network.sub}
             </p>
           </div>
         </div>
       </section>
 
-      <Section eyebrow="Couverture territoriale" title="Toutes les régions de Côte d'Ivoire.">
+      <Section eyebrow={t.network.coverageEyebrow} title={t.network.coverageTitle}>
         <div className="grid gap-12 lg:grid-cols-2 items-center">
           <div className="relative aspect-square max-w-md mx-auto">
-            {/* Stylized map */}
             <div className="absolute inset-0 rounded-full bg-gradient-hero opacity-10 blur-3xl" />
             <svg viewBox="0 0 400 400" className="relative w-full h-full">
               <defs>
@@ -96,20 +91,8 @@ function Network() {
                 { x: 110, y: 180, name: "Man" },
               ].map((c) => (
                 <g key={c.name}>
-                  <circle
-                    cx={c.x}
-                    cy={c.y}
-                    r={c.big ? 8 : 5}
-                    fill="oklch(0.52 0.13 155)"
-                    className="animate-pulse"
-                  />
-                  <circle
-                    cx={c.x}
-                    cy={c.y}
-                    r={c.big ? 16 : 10}
-                    fill="oklch(0.52 0.13 155)"
-                    fillOpacity="0.2"
-                  />
+                  <circle cx={c.x} cy={c.y} r={c.big ? 8 : 5} fill="oklch(0.52 0.13 155)" className="animate-pulse" />
+                  <circle cx={c.x} cy={c.y} r={c.big ? 16 : 10} fill="oklch(0.52 0.13 155)" fillOpacity="0.2" />
                   <text
                     x={c.x + 14}
                     y={c.y + 4}
@@ -133,10 +116,7 @@ function Network() {
                   <span className="text-muted-foreground">{r.level}%</span>
                 </div>
                 <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-accent rounded-full"
-                    style={{ width: `${r.level}%` }}
-                  />
+                  <div className="h-full bg-gradient-accent rounded-full" style={{ width: `${r.level}%` }} />
                 </div>
               </div>
             ))}
@@ -144,11 +124,7 @@ function Network() {
         </div>
       </Section>
 
-      <Section
-        className="bg-secondary/40"
-        eyebrow="Nos clients"
-        title="Tous les segments du retail ivoirien."
-      >
+      <Section className="bg-secondary/40" eyebrow={t.network.clientsEyebrow} title={t.network.clientsTitle}>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {clients.map((c) => (
             <div
