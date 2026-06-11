@@ -1,20 +1,24 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { cn } from "@/lib/utils";
-
-const nav = [
-  { to: "/", label: "Accueil" },
-  { to: "/about", label: "À propos" },
-  { to: "/services", label: "Services" },
-  { to: "/partenaires", label: "Partenaires" },
-  { to: "/reseau", label: "Réseau" },
-  { to: "/contact", label: "Contact" },
-] as const;
+import { useI18n } from "@/i18n/I18nProvider";
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const { t, lang, setLang } = useI18n();
+
+  const nav = [
+    { to: "/", label: t.nav.home, exact: true },
+    { to: "/about", label: t.nav.about },
+    { to: "/services", label: t.nav.services },
+    { to: "/partenaires", label: t.nav.partners },
+    { to: "/reseau", label: t.nav.network },
+    { to: "/contact", label: t.nav.contact },
+  ] as const;
+
+  const toggle = () => setLang(lang === "fr" ? "en" : "fr");
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl">
@@ -38,7 +42,7 @@ export function Header() {
               to={item.to}
               className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-smooth rounded-md hover:bg-secondary"
               activeProps={{ className: "text-primary bg-secondary" }}
-              activeOptions={{ exact: item.to === "/" }}
+              activeOptions={{ exact: "exact" in item && item.exact === true }}
             >
               {item.label}
             </Link>
@@ -46,11 +50,22 @@ export function Header() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
+          <button
+            type="button"
+            onClick={toggle}
+            aria-label={t.nav.langSwitch}
+            className="inline-flex items-center gap-1.5 rounded-md border border-border/60 bg-background px-3 py-2 text-xs font-bold uppercase tracking-wider text-foreground/80 hover:text-primary hover:border-accent/60 transition-smooth"
+          >
+            <Globe size={14} />
+            <span className={lang === "fr" ? "text-primary" : "text-muted-foreground"}>FR</span>
+            <span className="text-muted-foreground">/</span>
+            <span className={lang === "en" ? "text-primary" : "text-muted-foreground"}>EN</span>
+          </button>
           <Link
             to="/contact"
             className="inline-flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-card hover:bg-primary-glow transition-smooth"
           >
-            Devenir partenaire
+            {t.nav.ctaHeader}
           </Link>
         </div>
 
@@ -66,7 +81,7 @@ export function Header() {
       <div
         className={cn(
           "lg:hidden overflow-hidden border-t border-border/60 bg-background transition-all duration-300",
-          open ? "max-h-[480px]" : "max-h-0",
+          open ? "max-h-[560px]" : "max-h-0",
         )}
       >
         <nav className="container-pro flex flex-col py-4 gap-1">
@@ -77,17 +92,28 @@ export function Header() {
               onClick={() => setOpen(false)}
               className="px-3 py-3 text-sm font-medium text-foreground/80 rounded-md hover:bg-secondary"
               activeProps={{ className: "text-primary bg-secondary" }}
-              activeOptions={{ exact: item.to === "/" }}
+              activeOptions={{ exact: "exact" in item && item.exact === true }}
             >
               {item.label}
             </Link>
           ))}
+          <button
+            type="button"
+            onClick={() => {
+              toggle();
+              setOpen(false);
+            }}
+            className="mt-2 inline-flex items-center justify-center gap-2 rounded-md border border-border/60 bg-background px-5 py-3 text-sm font-semibold text-foreground"
+          >
+            <Globe size={16} />
+            {lang === "fr" ? "Switch to English" : "Passer en français"}
+          </button>
           <Link
             to="/contact"
             onClick={() => setOpen(false)}
             className="mt-2 inline-flex items-center justify-center rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
           >
-            Devenir partenaire
+            {t.nav.ctaHeader}
           </Link>
         </nav>
       </div>
