@@ -51,6 +51,7 @@ export const Route = createRootRoute({
         name: "twitter:description",
         content: "Le partenaire stratégique des usines et marques pour conquérir le marché ivoirien.",
       },
+      { name: "google-site-verification", content: "iQ6vPwpFKzgpkntb1JI7CfB8FCyjK_MZuxUOWmAJoV8" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
