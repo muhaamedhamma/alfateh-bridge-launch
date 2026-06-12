@@ -18,7 +18,9 @@ export const Route = createFileRoute("/services")({
         property: "og:description",
         content: "Une offre 360° pour les industriels et marques agroalimentaires.",
       },
+      { property: "og:url", content: "https://alfateh-bridge-launch.lovable.app/services" },
     ],
+    links: [{ rel: "canonical", href: "https://alfateh-bridge-launch.lovable.app/services" }],
   }),
   component: Services,
 });

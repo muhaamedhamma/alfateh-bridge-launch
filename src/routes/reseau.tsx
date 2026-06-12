@@ -20,7 +20,10 @@ export const Route = createFileRoute("/reseau")({
         content: "Une distribution intégrale du nord au sud de la Côte d'Ivoire.",
       },
       { property: "og:image", content: networkImg },
+      { property: "og:url", content: "https://alfateh-bridge-launch.lovable.app/reseau" },
+      { name: "twitter:image", content: networkImg },
     ],
+    links: [{ rel: "canonical", href: "https://alfateh-bridge-launch.lovable.app/reseau" }],
   }),
   component: Network,
 });

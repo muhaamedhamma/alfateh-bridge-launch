@@ -30,7 +30,33 @@ export const Route = createFileRoute("/blog/destockage-alimentaire-cote-divoire"
           "Comment gérer les stocks alimentaires en fin de série en Côte d'Ivoire ? Découvrez les solutions de distribution, la réglementation et les opportunités B2B.",
       },
       { property: "og:type", content: "article" },
+      {
+        property: "og:url",
+        content: "https://alfateh-bridge-launch.lovable.app/blog/destockage-alimentaire-cote-divoire",
+      },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [
+      {
+        rel: "canonical",
+        href: "https://alfateh-bridge-launch.lovable.app/blog/destockage-alimentaire-cote-divoire",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: "Guide du déstockage alimentaire en Côte d'Ivoire",
+          description:
+            "Guide complet sur le déstockage alimentaire en Côte d'Ivoire, la réglementation et les solutions de distribution B2B.",
+          mainEntityOfPage:
+            "https://alfateh-bridge-launch.lovable.app/blog/destockage-alimentaire-cote-divoire",
+          author: { "@type": "Organization", name: "AL FATEH" },
+          publisher: { "@type": "Organization", name: "AL FATEH" },
+        }),
+      },
     ],
   }),
   component: DestockageGuidePage,

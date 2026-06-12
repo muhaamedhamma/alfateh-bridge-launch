@@ -26,6 +26,22 @@ export const Route = createFileRoute("/contact")({
         property: "og:description",
         content: "Connectons votre activité au moteur de la distribution en Côte d'Ivoire.",
       },
+      { property: "og:url", content: "https://alfateh-bridge-launch.lovable.app/contact" },
+    ],
+    links: [{ rel: "canonical", href: "https://alfateh-bridge-launch.lovable.app/contact" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          name: "AL FATEH",
+          url: "https://alfateh-bridge-launch.lovable.app/contact",
+          email: "contact@alfateh.ci",
+          telephone: "+2252700000000",
+          address: { "@type": "PostalAddress", addressLocality: "Abidjan", addressCountry: "CI" },
+        }),
+      },
     ],
   }),
   component: Contact,

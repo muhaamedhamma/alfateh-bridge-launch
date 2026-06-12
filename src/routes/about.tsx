@@ -20,7 +20,10 @@ export const Route = createFileRoute("/about")({
         content: "Expertise, réseau et engagement au service de votre croissance.",
       },
       { property: "og:image", content: partnershipImg },
+      { property: "og:url", content: "https://alfateh-bridge-launch.lovable.app/about" },
+      { name: "twitter:image", content: partnershipImg },
     ],
+    links: [{ rel: "canonical", href: "https://alfateh-bridge-launch.lovable.app/about" }],
   }),
   component: About,
 });
