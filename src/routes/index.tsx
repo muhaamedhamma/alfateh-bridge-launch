@@ -28,7 +28,7 @@ import { useT } from "@/i18n/I18nProvider";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "AL FATEH — Le moteur de la distribution agroalimentaire en Côte d'Ivoire" },
+      { title: "Distribution agroalimentaire en Côte d'Ivoire | AL FATEH" },
       {
         name: "description",
         content:
@@ -40,6 +40,12 @@ export const Route = createFileRoute("/")({
         content: "Pont stratégique entre les usines et le marché ivoirien.",
       },
       { property: "og:image", content: heroImg },
+      { property: "og:url", content: "https://alfateh-bridge-launch.lovable.app/" },
+      { name: "twitter:image", content: heroImg },
+    ],
+    links: [
+      { rel: "canonical", href: "https://alfateh-bridge-launch.lovable.app/" },
+      { rel: "preload", as: "image", href: heroImg, fetchPriority: "high" },
     ],
   }),
   component: Home,
@@ -66,6 +72,7 @@ function Home() {
             alt="AL FATEH"
             width={1920}
             height={1080}
+            fetchPriority="high"
             className="h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/40" />

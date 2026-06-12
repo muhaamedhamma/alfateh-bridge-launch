@@ -44,13 +44,13 @@ export const Route = createRootRoute({
           "Le partenaire stratégique des usines et marques pour conquérir le marché ivoirien.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "AL FATEH" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "AL FATEH" },
-      { name: "description", content: "AL FATEH Connect is a professional website for an agro-food distribution company in Ivory Coast." },
-      { property: "og:description", content: "AL FATEH Connect is a professional website for an agro-food distribution company in Ivory Coast." },
-      { name: "twitter:description", content: "AL FATEH Connect is a professional website for an agro-food distribution company in Ivory Coast." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0e7dbc10-3265-4564-a996-d9622e656c85/id-preview-9e2f0a91--69f07849-7552-4d22-8fb2-1f1fa51beaf8.lovable.app-1777750754755.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0e7dbc10-3265-4564-a996-d9622e656c85/id-preview-9e2f0a91--69f07849-7552-4d22-8fb2-1f1fa51beaf8.lovable.app-1777750754755.png" },
+      {
+        name: "twitter:description",
+        content: "Le partenaire stratégique des usines et marques pour conquérir le marché ivoirien.",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -66,6 +66,31 @@ export const Route = createRootRoute({
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://alfateh-bridge-launch.lovable.app/#organization",
+              name: "AL FATEH",
+              url: "https://alfateh-bridge-launch.lovable.app",
+              email: "contact@alfateh.ci",
+              address: { "@type": "PostalAddress", addressLocality: "Abidjan", addressCountry: "CI" },
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://alfateh-bridge-launch.lovable.app/#website",
+              name: "AL FATEH",
+              url: "https://alfateh-bridge-launch.lovable.app",
+              publisher: { "@id": "https://alfateh-bridge-launch.lovable.app/#organization" },
+            },
+          ],
+        }),
       },
     ],
   }),

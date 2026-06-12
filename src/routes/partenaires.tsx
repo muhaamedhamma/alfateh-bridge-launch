@@ -19,7 +19,10 @@ export const Route = createFileRoute("/partenaires")({
         content: "Le raccourci stratégique vers le marché ivoirien.",
       },
       { property: "og:image", content: partnershipImg },
+      { property: "og:url", content: "https://alfateh-bridge-launch.lovable.app/partenaires" },
+      { name: "twitter:image", content: partnershipImg },
     ],
+    links: [{ rel: "canonical", href: "https://alfateh-bridge-launch.lovable.app/partenaires" }],
   }),
   component: Partners,
 });
