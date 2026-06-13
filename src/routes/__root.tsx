@@ -124,6 +124,7 @@ function RootComponent() {
           <Outlet />
         </main>
         <Footer />
+        <WhatsAppFab />
       </div>
     </I18nProvider>
   );
