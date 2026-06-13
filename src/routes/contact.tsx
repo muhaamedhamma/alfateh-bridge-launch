@@ -309,12 +309,16 @@ function Contact() {
                     error={errors.message}
                   />
 
+                  {submitError && (
+                    <p className="text-sm text-destructive">{submitError}</p>
+                  )}
                   <button
                     type="submit"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md bg-primary px-8 py-4 text-base font-semibold text-primary-foreground hover:bg-primary-glow transition-smooth shadow-card"
+                    disabled={submitting}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md bg-primary px-8 py-4 text-base font-semibold text-primary-foreground hover:bg-primary-glow transition-smooth shadow-card disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {audience === "acheteur" ? tc.submitBuyer : tc.submitBrand}
-                    <Send size={18} />
+                    {submitting ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
                   </button>
                 </form>
               </>
