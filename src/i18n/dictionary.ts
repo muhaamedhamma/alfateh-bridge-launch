@@ -711,6 +711,37 @@ const en: typeof fr = {
     ctaAudit: "Request a stock audit",
     ctaLots: "See available lots",
   },
+  whatsapp: {
+    label: "WhatsApp",
+    aria: "Chat on WhatsApp",
+    afterFormTitle: "Prefer to continue on WhatsApp?",
+    afterFormDesc: "Your request is saved. Continue the conversation right away with our sales team.",
+    afterFormCta: "Continue on WhatsApp",
+  },
+  quote: {
+    metaTitle: "Quote request — AL FATEH",
+    metaDesc: "Get a tailored quote for your food supply needs in Côte d'Ivoire.",
+    eyebrow: "Quote request",
+    title: "Get a tailored quote within 48h.",
+    sub: "Tell us about your needs (products, quantities, frequency, delivery area) — we'll come back with a fitting proposal.",
+    nameLabel: "Full name",
+    companyLabel: "Company / Store",
+    emailLabel: "Business email",
+    phoneLabel: "Phone (WhatsApp preferred)",
+    zoneLabel: "Delivery area",
+    productsLabel: "Products & quantities needed",
+    productsPlaceholder: "E.g.: Fragrant rice 5kg — 200 bags / month\nVegetable oil 1L — 100 cartons\nSweetened condensed milk — 50 cartons",
+    messageLabel: "Additional information",
+    messagePlaceholder: "Delivery frequency, logistical constraints, target budget…",
+    submit: "Request my quote",
+    sentTitle: "Request sent.",
+    sentDesc: "Our team is reviewing your request and will get back to you within 48 business hours with a quote.",
+    errors: {
+      nameShort: "Name too short",
+      emailInvalid: "Invalid email",
+      productsShort: "List at least one product",
+    },
+  },
 };
 
 export const dictionary = { fr, en } as const;
