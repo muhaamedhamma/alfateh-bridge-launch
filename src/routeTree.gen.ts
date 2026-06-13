@@ -13,6 +13,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ReseauRouteImport } from './routes/reseau'
 import { Route as PartenairesRouteImport } from './routes/partenaires'
+import { Route as DevisRouteImport } from './routes/devis'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -36,6 +37,11 @@ const ReseauRoute = ReseauRouteImport.update({
 const PartenairesRoute = PartenairesRouteImport.update({
   id: '/partenaires',
   path: '/partenaires',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DevisRoute = DevisRouteImport.update({
+  id: '/devis',
+  path: '/devis',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/devis': typeof DevisRoute
   '/partenaires': typeof PartenairesRoute
   '/reseau': typeof ReseauRoute
   '/services': typeof ServicesRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/devis': typeof DevisRoute
   '/partenaires': typeof PartenairesRoute
   '/reseau': typeof ReseauRoute
   '/services': typeof ServicesRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/devis': typeof DevisRoute
   '/partenaires': typeof PartenairesRoute
   '/reseau': typeof ReseauRoute
   '/services': typeof ServicesRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/devis'
     | '/partenaires'
     | '/reseau'
     | '/services'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/devis'
     | '/partenaires'
     | '/reseau'
     | '/services'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/devis'
     | '/partenaires'
     | '/reseau'
     | '/services'
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
+  DevisRoute: typeof DevisRoute
   PartenairesRoute: typeof PartenairesRoute
   ReseauRoute: typeof ReseauRoute
   ServicesRoute: typeof ServicesRoute
@@ -165,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PartenairesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/devis': {
+      id: '/devis'
+      path: '/devis'
+      fullPath: '/devis'
+      preLoaderRoute: typeof DevisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -200,6 +220,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
+  DevisRoute: DevisRoute,
   PartenairesRoute: PartenairesRoute,
   ReseauRoute: ReseauRoute,
   ServicesRoute: ServicesRoute,
