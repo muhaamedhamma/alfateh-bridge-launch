@@ -80,14 +80,18 @@ function Contact() {
   const [form, setForm] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [waLink, setWaLink] = useState<string>("");
 
   const switchAudience = (a: Audience) => {
     setAudience(a);
     setErrors({});
     setSent(false);
+    setSubmitError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const { buyerSchema, brandSchema } = makeSchemas(t);
     const schema = audience === "acheteur" ? buyerSchema : brandSchema;
@@ -101,7 +105,46 @@ function Contact() {
       return;
     }
     setErrors({});
-    setSent(true);
+    setSubmitError(null);
+    setSubmitting(true);
+    try {
+      const payload =
+        audience === "acheteur"
+          ? {
+              type: "buyer" as const,
+              name: result.data.name,
+              email: result.data.email,
+              message: result.data.message,
+              company: (result.data as { company: string }).company,
+              commerceType: (result.data as { commerceType: string }).commerceType,
+              zone: (result.data as { zone: string }).zone,
+              source: "contact-page",
+            }
+          : {
+              type: "brand" as const,
+              name: result.data.name,
+              email: result.data.email,
+              message: result.data.message,
+              company: (result.data as { company: string }).company,
+              country: (result.data as { country: string }).country,
+              brandType: (result.data as { brandType: string }).brandType,
+              source: "contact-page",
+            };
+      await submitLead({ data: payload });
+      const waMsg =
+        audience === "acheteur"
+          ? `Bonjour AL FATEH, je suis ${payload.name} (${payload.company}) et je souhaite devenir client. ${payload.message}`
+          : `Bonjour AL FATEH, je représente ${payload.name} (${payload.company}) et je souhaite proposer un partenariat. ${payload.message}`;
+      setWaLink(whatsappLink(waMsg));
+      setSent(true);
+    } catch (err) {
+      console.error(err);
+      setSubmitError(
+        err instanceof Error ? err.message : "Erreur d'envoi. Réessayez.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const update = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
