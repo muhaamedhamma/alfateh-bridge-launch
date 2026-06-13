@@ -1,6 +1,7 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { WhatsAppFab } from "@/components/site/WhatsAppFab";
 import { I18nProvider, useT } from "@/i18n/I18nProvider";
 
 import appCss from "../styles.css?url";
@@ -123,6 +124,7 @@ function RootComponent() {
           <Outlet />
         </main>
         <Footer />
+        <WhatsAppFab />
       </div>
     </I18nProvider>
   );

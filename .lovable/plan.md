@@ -1,109 +1,126 @@
+# Plan de transformation AL FATEH — site vitrine → plateforme commerciale
 
-# Refonte AL FATEH — Hub stratégique unifié
+Réalisation en **4 phases**, dans l'ordre d'impact business. Chaque phase est livrable indépendamment.
 
-L'ancienne version segmentait trop frontalement les deux audiences. La nouvelle direction : **un seul récit fluide** qui positionne AL FATEH comme le hub central, avec des **bénéfices clairement ciblés mais présentés en parallèle** (jamais en opposition).
+---
 
-## Principe directeur
+## Phase 1 — Conversion commerciale (priorité absolue)
 
-- Un seul fil narratif : *"AL FATEH = pont entre usines et marché ivoirien"*.
-- Les bénéfices acheteurs et marques apparaissent **côte à côte** dans la même section, jamais isolés sur des pages distinctes.
-- **Prix compétitifs** = autorisé uniquement dans les blocs/sections "approvisionnement / distributeurs".
-- **Croissance / accès marché** = uniquement dans les blocs "marques / partenaires".
-- Aucun discours ne domine : équilibre visuel 50/50 dans les sections hybrides.
+**Objectif** : ne plus perdre un seul prospect.
 
-## 1. Page d'accueil (`src/routes/index.tsx`) — réécrite
+1. **Bouton WhatsApp flottant** (toutes pages, FR/EN)
+   - Numéro : **+225 05 03 90 73 26**
+   - Lien `wa.me/22505039073 26` avec message pré-rempli contextuel par page (ex : "Bonjour, je suis intéressé par devenir client AL FATEH").
+   - Animation pulse discrète, masqué à l'impression.
 
-Structure linéaire et fluide :
+2. **Formulaire de contact connecté** (page Contact existante + nouveau formulaire devis)
+   - **Email** via Lovable Emails → `contact@alfateh.ci` + `direction@alfateh.ci` (templates React Email brandés, distincts acheteur/marque/devis).
+   - **WhatsApp** : après soumission, bouton "Continuer sur WhatsApp" avec récap pré-rempli.
+   - **Stockage Lovable Cloud** : table `leads` (type, nom, société, email, téléphone, message, produits, payload JSON, statut, created_at) + RLS admin-only.
 
-1. **Hero unifié**
-   - Titre : *"Le moteur de la distribution agroalimentaire en Côte d'Ivoire"*
-   - Sous-titre : *"AL FATEH connecte marques, usines et distributeurs à travers un réseau performant, fiable et structuré."*
-   - **Deux CTA neutres** (pas de choix de camp) :
-     - "Travailler avec nous" → `/contact`
-     - "Découvrir notre réseau" → `/reseau`
-   - Bandeau stats conservé (40+, 100%, 500+, 24/7).
+3. **Page Demande de devis** (`/devis`)
+   - Sélecteur multi-produits (alimenté par le catalogue, voir Phase 2).
+   - Quantités, délai souhaité, zone de livraison.
+   - Même triple destination : email + WhatsApp + Cloud.
 
-2. **Section Positionnement hybride** (cœur de la nouvelle page)
-   - Intro : *"AL FATEH accompagne à la fois les acteurs de la distribution et les marques industrielles."*
-   - **Deux blocs côte à côte** (grid 2 colonnes, design symétrique) :
-     - 🛒 **Pour les distributeurs** : Disponibilité continue · Prix compétitifs (prix usine) · Large gamme
-     - 🏭 **Pour les marques** : Accès au marché · Réseau national · Développement commercial
-   - Pas de CTA séparés — un seul lien "En savoir plus" sous les deux blocs.
+4. **Mini back-office leads** (`/_authenticated/admin/leads`)
+   - Liste, filtre par type, statut (nouveau/contacté/converti), export CSV.
+   - Auth simple via Supabase + rôle `admin` (table `user_roles` + `has_role`).
 
-3. **Section Valeur — Approvisionnement** (axée acheteurs, ton inclusif)
-   - Titre : *"Un approvisionnement fiable, pensé pour la performance"*
-   - 4 cartes : Produits toujours disponibles · Logistique efficace · Prix optimisés · Réseau solide
-   - Visuel : photo retail/entrepôt.
+---
 
-4. **Section Partenariat — Croissance** (axée marques, ton inclusif)
-   - Titre : *"Un partenaire stratégique pour votre croissance"*
-   - 4 cartes : Déploiement rapide · Expertise locale 40+ ans · Réseau actif · Accélération des ventes
-   - Visuel : photo partnership.
+## Phase 2 — Catalogue & preuves sociales
 
-5. **À propos (teaser)** — histoire, expertise, vision pont.
-6. **Réseau (teaser)** — couverture nationale + types de clients servis (mix supermarchés, supérettes, grossistes, détaillants).
-7. **Chiffres clés** — bandeau dédié visuel fort.
-8. **Vision** — référence CI → leader régional Afrique de l'Ouest.
-9. **Témoignages** — mix d'un commerçant et d'une marque (étiquetés discrètement).
-10. **Logos partenaires** placeholder.
-11. **CTA banner final** unifié : *"Rejoignez le hub AL FATEH"* — un seul bouton vers `/contact`.
+5. **Catalogue produits** (`/catalogue` + `/catalogue/$categorie`)
+   - Schéma Cloud : `categories`, `brands`, `products` (nom, catégorie, marque, image, description, packaging, dispo).
+   - Back-office `/_authenticated/admin/catalogue` (CRUD + upload images via Supabase Storage).
+   - 8 catégories pré-créées : Boissons, Conserves, Produits laitiers, Huiles, Riz, Pâtes, Biscuiterie, Confiserie.
+   - Filtre par catégorie + marque, recherche, design grille responsive.
 
-⚠️ Suppression : sections "Pourquoi AL FATEH" mélangées et "Spécial partenaires" actuelles qui cassent l'équilibre.
+6. **Logos partenaires & marques représentées** (homepage + page Partenaires)
+   - Carrousel logos en niveaux de gris → couleur au hover.
+   - Section "Ils nous font confiance" sur l'accueil.
+   - Données depuis table `brands` (avec champ `is_featured` + `logo_url`).
 
-## 2. Pages secondaires — ajustements
+7. **Chiffres clés animés** (homepage + À propos)
+   - Compteurs animés : +500 détaillants, +50 grossistes, +15 villes, +1000 livraisons/mois, +40 ans.
+   - Valeurs configurables dans une table `stats` (Cloud) → modifiables sans redéploiement.
 
-- **`/services`** : rester neutre, organiser en 4 services (distribution en gros · logistique nationale · développement commercial de marques · gestion de réseau). Aucun changement majeur.
-- **`/partenaires`** : conservé — page d'approfondissement marques. Vérifier qu'aucun mot "prix compétitif" ne traîne.
-- **`/reseau`** : ajouter une mention claire des types de commerces desservis (acheteurs).
-- **`/about`** : conservé.
-- ❌ **Pas de page `/acheteurs` séparée** — le narratif unifié rend cela superflu. Les acheteurs trouvent leur réponse sur la home + `/services` + `/reseau`.
+8. **Carte interactive du réseau** (page Réseau)
+   - Carte SVG de Côte d'Ivoire avec villes desservies cliquables.
+   - Liste des zones par région (Abidjan, Bouaké, San-Pédro, Yamoussoukro, Korhogo, etc.).
+   - Tooltip avec nombre de points de vente par ville.
 
-## 3. Contact intelligent (`src/routes/contact.tsx`)
+9. **Téléchargements PDF** (footer + page Partenaires)
+   - Présentation entreprise, brochure commerciale, fiche partenariat marque, catalogue PDF.
+   - Stockage Supabase Storage (bucket public `documents`).
+   - Tracking téléchargements dans `leads` (lead magnet → demande email).
 
-- Ajouter `validateSearch` Zod avec `fallback` pour query param `?type=acheteur|marque`.
-- En haut du formulaire, **2 grandes cartes radio** :
-  - 🛒 "Je suis acheteur"
-  - 🏭 "Je suis une marque / usine"
-- Champs dynamiques selon le choix :
-  - Acheteur : nom commerce, type (supermarché / supérette / grossiste / détaillant), zone, volume estimé.
-  - Marque : entreprise, pays, type (usine locale / marque internationale / nouvel entrant), description produits.
-- Pré-sélection si query param présent.
-- Confirmation différenciée.
+---
 
-## 4. Header / Footer
+## Phase 3 — SEO, contenu & analytics
 
-- **Header** : menu inchangé (Accueil · À propos · Services · Partenaires · Réseau · Contact). CTA bouton : "Travailler avec nous" → `/contact`.
-- **Footer** : ajouter deux mini-colonnes équilibrées "Distributeurs" / "Marques & usines" pointant chacune vers `/contact?type=...`.
+10. **Blog SEO étendu** (`/blog` + `/blog/$slug`)
+    - Structure articles avec table `posts` (Cloud) + back-office.
+    - Création de 5 articles SEO ciblés : "Distribution alimentaire CI", "Importation alimentaire CI", "Grossiste alimentaire Abidjan", "Représentation de marques Afrique de l'Ouest", "Réseau distribution CI" (gardons l'article déstockage existant).
+    - JSON-LD Article, OG image par article, sitemap automatique.
 
-## 5. Design system
+11. **Google Analytics 4 + Meta Pixel + Search Console**
+    - GA4 via gtag (ID demandé à l'utilisateur).
+    - Meta Pixel (ID demandé).
+    - Search Console déjà connecté ✅ — soumission sitemap automatique après publish.
+    - Événements custom : `lead_submitted`, `quote_requested`, `whatsapp_clicked`, `pdf_downloaded`.
 
-- Conserver palette bleu foncé / vert / blanc, OKLCH, `shadow-elegant`, framer-motion.
-- Différencier visuellement les **deux blocs hybrides** (positionnement) par un accent couleur subtil :
-  - Bloc distributeurs → bordure / icônes accent vert.
-  - Bloc marques → bordure / icônes accent bleu profond.
-- Maintenir un design symétrique strict pour ne favoriser aucune cible.
+---
+
+## Phase 4 — Espace marques & investisseurs
+
+12. **Page Espace Marques** (`/marques`)
+    - "Pourquoi choisir AL FATEH comme représentant en Côte d'Ivoire"
+    - 6 piliers : Réseau terrain, Logistique, Force commerciale, Merchandising, Reporting, Conformité réglementaire.
+    - Témoignages marques (table `testimonials`).
+    - CTA "Devenir partenaire" → formulaire dédié.
+
+13. **Page Investisseurs** (`/investisseurs`)
+    - Vision, taille du marché ivoirien agroalimentaire, stratégie, croissance, opportunités régionales (UEMOA).
+    - Téléchargement deck investisseur (PDF protégé par formulaire email).
+
+---
+
+## Domaine personnalisé
+
+14. **Migration vers alfateh.ci** (ou alfatehdistribution.com)
+    - Guidage via le panneau Domaines de Lovable (achat ou connexion).
+    - Mise à jour des URLs canoniques, sitemap, JSON-LD, OG.
+    - Hors-périmètre code direct : action utilisateur requise au registrar.
+
+---
 
 ## Détails techniques
 
-- Routes TanStack : aucune nouvelle route, uniquement édition.
-- Query params contact : `zodValidator` + `fallback` du paquet `@tanstack/zod-adapter` (à installer si absent ; sinon utiliser zod direct via `validateSearch: (s) => schema.parse(s)`).
-- Scroll smooth via CSS standard.
-- SEO : mettre à jour `head()` de `index.tsx` avec le nouveau titre/description orientés "moteur / hub".
-- Pas d'autres dépendances.
+**Stack** : TanStack Start (existant) + Lovable Cloud (Supabase) + Lovable Emails + Lovable AI (pas nécessaire ici).
 
-## Fichiers impactés
+**Nouvelles tables Cloud** :
+- `leads`, `categories`, `brands`, `products`, `stats`, `posts`, `testimonials`, `user_roles`
+- RLS strict : lectures publiques uniquement sur `categories/brands/products/posts/testimonials/stats` ; écritures admin via `has_role()`.
+- GRANT explicites sur chaque table publique.
 
-- ✏️ `src/routes/index.tsx` — réécriture complète selon nouvelle structure.
-- ✏️ `src/routes/contact.tsx` — formulaire intelligent + lecture query param.
-- ✏️ `src/routes/reseau.tsx` — ajout types de clients desservis.
-- ✏️ `src/routes/partenaires.tsx` — vérification discours (retrait du mot "prix" si présent).
-- ✏️ `src/components/site/Footer.tsx` — colonnes Distributeurs / Marques.
-- ✏️ `src/components/site/CtaBanner.tsx` — texte unifié "hub".
+**Nouveaux server functions** :
+- `submitLead`, `submitQuote`, `listLeads` (admin), `updateLeadStatus` (admin), CRUD catalogue (admin).
 
-## Résultat attendu
+**Routes server** :
+- `/api/public/sitemap.xml` (déjà existant — étendu avec articles + catégories).
 
-À la lecture de la home, le visiteur ressent :
-- *"AL FATEH contrôle la distribution agroalimentaire en CI."*
-- Une marque pense : *"J'ai besoin d'eux pour entrer sur le marché."*
-- Un commerçant pense : *"Je dois m'approvisionner chez eux."*
-- Aucun ne se sent exclu — les deux audiences voient leurs bénéfices spécifiques dans le même récit.
+**Auth** : ajout de `_authenticated/admin/*` pour le back-office. Première inscription admin via SQL seed manuel (créer user puis insérer rôle).
+
+**Emails** : 3 templates React Email (`lead-buyer.tsx`, `lead-brand.tsx`, `quote-request.tsx`) + accusé de réception au prospect.
+
+**Secrets nécessaires plus tard** : `VITE_GA4_ID`, `VITE_META_PIXEL_ID` (publishables, donc en `.env`).
+
+---
+
+## Livraison proposée
+
+Je commence par la **Phase 1 complète** (WhatsApp + formulaires connectés + back-office leads). Une fois validée, j'enchaîne sur la Phase 2, etc. Tu peux à tout moment réordonner ou stopper entre deux phases.
+
+**Action requise pour démarrer** : valider ce plan → j'active Lovable Cloud (prérequis emails + DB) puis je code la Phase 1.

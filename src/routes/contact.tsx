@@ -1,11 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { z } from "zod";
-import { Mail, Phone, MapPin, Send, CheckCircle2, ShoppingCart, Factory } from "lucide-react";
+import { Mail, Phone, MapPin, Send, CheckCircle2, ShoppingCart, Factory, MessageCircle, Loader2 } from "lucide-react";
 import { Section } from "@/components/site/Section";
 import { cn } from "@/lib/utils";
 import { useT } from "@/i18n/I18nProvider";
 import type { Dict } from "@/i18n/dictionary";
+import { submitLead } from "@/lib/leads.functions";
+import { whatsappLink } from "@/lib/whatsapp";
 
 const searchSchema = z.object({
   type: z.enum(["acheteur", "marque"]).optional().catch(undefined),
@@ -78,14 +80,18 @@ function Contact() {
   const [form, setForm] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [waLink, setWaLink] = useState<string>("");
 
   const switchAudience = (a: Audience) => {
     setAudience(a);
     setErrors({});
     setSent(false);
+    setSubmitError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const { buyerSchema, brandSchema } = makeSchemas(t);
     const schema = audience === "acheteur" ? buyerSchema : brandSchema;
@@ -99,7 +105,46 @@ function Contact() {
       return;
     }
     setErrors({});
-    setSent(true);
+    setSubmitError(null);
+    setSubmitting(true);
+    try {
+      const payload =
+        audience === "acheteur"
+          ? {
+              type: "buyer" as const,
+              name: result.data.name,
+              email: result.data.email,
+              message: result.data.message,
+              company: (result.data as { company: string }).company,
+              commerceType: (result.data as { commerceType: string }).commerceType,
+              zone: (result.data as { zone: string }).zone,
+              source: "contact-page",
+            }
+          : {
+              type: "brand" as const,
+              name: result.data.name,
+              email: result.data.email,
+              message: result.data.message,
+              company: (result.data as { company: string }).company,
+              country: (result.data as { country: string }).country,
+              brandType: (result.data as { brandType: string }).brandType,
+              source: "contact-page",
+            };
+      await submitLead({ data: payload });
+      const waMsg =
+        audience === "acheteur"
+          ? `Bonjour AL FATEH, je suis ${payload.name} (${payload.company}) et je souhaite devenir client. ${payload.message}`
+          : `Bonjour AL FATEH, je représente ${payload.name} (${payload.company}) et je souhaite proposer un partenariat. ${payload.message}`;
+      setWaLink(whatsappLink(waMsg));
+      setSent(true);
+    } catch (err) {
+      console.error(err);
+      setSubmitError(
+        err instanceof Error ? err.message : "Erreur d'envoi. Réessayez.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const update = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
@@ -170,6 +215,18 @@ function Contact() {
                 <p className="mt-3 text-muted-foreground max-w-md mx-auto">
                   {audience === "acheteur" ? tc.sentBuyer : tc.sentBrand}
                 </p>
+                <div className="mt-8 mx-auto max-w-md rounded-xl border border-border/60 bg-secondary/40 p-5">
+                  <p className="font-display font-bold text-primary">{t.whatsapp.afterFormTitle}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{t.whatsapp.afterFormDesc}</p>
+                  <a
+                    href={waLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-2 rounded-md bg-[#25D366] px-5 py-3 text-sm font-semibold text-white hover:bg-[#1DA851] transition-smooth"
+                  >
+                    <MessageCircle size={18} /> {t.whatsapp.afterFormCta}
+                  </a>
+                </div>
               </div>
             ) : (
               <>
@@ -252,12 +309,16 @@ function Contact() {
                     error={errors.message}
                   />
 
+                  {submitError && (
+                    <p className="text-sm text-destructive">{submitError}</p>
+                  )}
                   <button
                     type="submit"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md bg-primary px-8 py-4 text-base font-semibold text-primary-foreground hover:bg-primary-glow transition-smooth shadow-card"
+                    disabled={submitting}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md bg-primary px-8 py-4 text-base font-semibold text-primary-foreground hover:bg-primary-glow transition-smooth shadow-card disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {audience === "acheteur" ? tc.submitBuyer : tc.submitBrand}
-                    <Send size={18} />
+                    {submitting ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
                   </button>
                 </form>
               </>
