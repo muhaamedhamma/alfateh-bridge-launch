@@ -55,7 +55,7 @@ export const submitLead = createServerFn({ method: "POST" })
       phone: data.phone ?? null,
       message: data.message,
       source: data.source ?? null,
-      payload: data as unknown as Record<string, unknown>,
+      payload: JSON.parse(JSON.stringify(data)),
       company:
         data.type === "buyer" || data.type === "brand"
           ? data.company
