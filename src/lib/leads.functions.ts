@@ -48,29 +48,29 @@ export const submitLead = createServerFn({ method: "POST" })
       "@/integrations/supabase/client.server"
     );
 
-    const row: Record<string, unknown> = {
+    const row = {
       type: data.type,
       name: data.name,
       email: data.email,
       phone: data.phone ?? null,
       message: data.message,
       source: data.source ?? null,
-      payload: data,
+      payload: data as unknown as Record<string, unknown>,
+      company:
+        data.type === "buyer" || data.type === "brand"
+          ? data.company
+          : data.company ?? null,
+      commerce_type: data.type === "buyer" ? data.commerceType : null,
+      zone:
+        data.type === "buyer"
+          ? data.zone
+          : data.type === "quote"
+            ? data.zone ?? null
+            : null,
+      country: data.type === "brand" ? data.country : null,
+      brand_type: data.type === "brand" ? data.brandType : null,
+      products: data.type === "quote" ? data.products : null,
     };
-
-    if (data.type === "buyer") {
-      row.company = data.company;
-      row.commerce_type = data.commerceType;
-      row.zone = data.zone;
-    } else if (data.type === "brand") {
-      row.company = data.company;
-      row.country = data.country;
-      row.brand_type = data.brandType;
-    } else {
-      row.company = data.company ?? null;
-      row.zone = data.zone ?? null;
-      row.products = data.products;
-    }
 
     const { data: inserted, error } = await supabaseAdmin
       .from("leads")
