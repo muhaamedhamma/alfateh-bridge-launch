@@ -339,6 +339,37 @@ const fr = {
     ctaAudit: "Demander un audit de stock",
     ctaLots: "Voir les lots disponibles",
   },
+  whatsapp: {
+    label: "WhatsApp",
+    aria: "Discuter sur WhatsApp",
+    afterFormTitle: "Préférez continuer sur WhatsApp ?",
+    afterFormDesc: "Votre demande est enregistrée. Continuez la discussion immédiatement avec notre équipe commerciale.",
+    afterFormCta: "Continuer sur WhatsApp",
+  },
+  quote: {
+    metaTitle: "Demande de devis — AL FATEH",
+    metaDesc: "Recevez un devis personnalisé pour votre approvisionnement agroalimentaire en Côte d'Ivoire.",
+    eyebrow: "Demande de devis",
+    title: "Recevez un devis sur-mesure sous 48h.",
+    sub: "Précisez vos besoins (produits, quantités, fréquence, zone de livraison) — nous revenons vers vous avec une proposition adaptée.",
+    nameLabel: "Nom complet",
+    companyLabel: "Société / Commerce",
+    emailLabel: "Email professionnel",
+    phoneLabel: "Téléphone (WhatsApp de préférence)",
+    zoneLabel: "Zone de livraison",
+    productsLabel: "Produits & quantités souhaitées",
+    productsPlaceholder: "Ex : Riz parfumé 5kg — 200 sacs / mois\nHuile végétale 1L — 100 cartons\nLait concentré sucré — 50 cartons",
+    messageLabel: "Informations complémentaires",
+    messagePlaceholder: "Fréquence de livraison, contraintes logistiques, budget cible…",
+    submit: "Demander mon devis",
+    sentTitle: "Demande envoyée.",
+    sentDesc: "Notre équipe étudie votre demande et revient vers vous sous 48h ouvrées avec une proposition chiffrée.",
+    errors: {
+      nameShort: "Nom trop court",
+      emailInvalid: "Email invalide",
+      productsShort: "Précisez au moins un produit",
+    },
+  },
 };
 
 const en: typeof fr = {
