@@ -215,6 +215,18 @@ function Contact() {
                 <p className="mt-3 text-muted-foreground max-w-md mx-auto">
                   {audience === "acheteur" ? tc.sentBuyer : tc.sentBrand}
                 </p>
+                <div className="mt-8 mx-auto max-w-md rounded-xl border border-border/60 bg-secondary/40 p-5">
+                  <p className="font-display font-bold text-primary">{t.whatsapp.afterFormTitle}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{t.whatsapp.afterFormDesc}</p>
+                  <a
+                    href={waLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-2 rounded-md bg-[#25D366] px-5 py-3 text-sm font-semibold text-white hover:bg-[#1DA851] transition-smooth"
+                  >
+                    <MessageCircle size={18} /> {t.whatsapp.afterFormCta}
+                  </a>
+                </div>
               </div>
             ) : (
               <>
