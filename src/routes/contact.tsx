@@ -1,11 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { z } from "zod";
-import { Mail, Phone, MapPin, Send, CheckCircle2, ShoppingCart, Factory } from "lucide-react";
+import { Mail, Phone, MapPin, Send, CheckCircle2, ShoppingCart, Factory, MessageCircle, Loader2 } from "lucide-react";
 import { Section } from "@/components/site/Section";
 import { cn } from "@/lib/utils";
 import { useT } from "@/i18n/I18nProvider";
 import type { Dict } from "@/i18n/dictionary";
+import { submitLead } from "@/lib/leads.functions";
+import { whatsappLink } from "@/lib/whatsapp";
 
 const searchSchema = z.object({
   type: z.enum(["acheteur", "marque"]).optional().catch(undefined),
