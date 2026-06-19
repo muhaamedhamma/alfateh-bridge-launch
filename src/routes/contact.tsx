@@ -40,7 +40,7 @@ export const Route = createFileRoute("/contact")({
           name: "AL FATEH",
           url: "https://alfateh-bridge-launch.lovable.app/contact",
           email: "contact@alfateh.ci",
-          telephone: "+2252700000000",
+          telephone: "+2250710629429",
           address: { "@type": "PostalAddress", addressLocality: "Abidjan", addressCountry: "CI" },
         }),
       },
@@ -195,7 +195,16 @@ function Contact() {
                   </div>
                   <div>
                     <div className="font-semibold text-foreground">{tc.phone}</div>
-                    <div className="text-muted-foreground text-sm">+225 27 00 00 00 00</div>
+                    <a href="tel:+2250710629429" className="text-muted-foreground text-sm hover:text-primary">+225 07 10 62 94 29</a>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center text-primary shrink-0">
+                    <MessageCircle size={18} />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground">WhatsApp</div>
+                    <a href="https://wa.me/2250503907326" target="_blank" rel="noopener noreferrer" className="text-muted-foreground text-sm hover:text-primary">+225 05 03 90 73 26</a>
                   </div>
                 </li>
               </ul>
