@@ -8,6 +8,7 @@ import { useT } from "@/i18n/I18nProvider";
 import type { Dict } from "@/i18n/dictionary";
 import { submitLead } from "@/lib/leads.functions";
 import { whatsappLink } from "@/lib/whatsapp";
+import networkImg from "@/assets/network-trucks.jpg";
 
 const searchSchema = z.object({
   type: z.enum(["acheteur", "marque"]).optional().catch(undefined),
