@@ -8,6 +8,7 @@ import { useT } from "@/i18n/I18nProvider";
 import type { Dict } from "@/i18n/dictionary";
 import { submitLead } from "@/lib/leads.functions";
 import { whatsappLink } from "@/lib/whatsapp";
+import networkImg from "@/assets/network-trucks.jpg";
 
 const searchSchema = z.object({
   type: z.enum(["acheteur", "marque"]).optional().catch(undefined),
@@ -40,7 +41,7 @@ export const Route = createFileRoute("/contact")({
           name: "AL FATEH",
           url: "https://alfateh-bridge-launch.lovable.app/contact",
           email: "contact@alfateh.ci",
-          telephone: "+2252700000000",
+          telephone: "+2250710629429",
           address: { "@type": "PostalAddress", addressLocality: "Abidjan", addressCountry: "CI" },
         }),
       },
@@ -152,9 +153,12 @@ function Contact() {
 
   return (
     <>
-      <section className="bg-gradient-hero text-primary-foreground py-20 md:py-24 relative overflow-hidden">
-        <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-accent/30 blur-3xl" />
-        <div className="container-pro relative">
+      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={networkImg} alt="" width={1600} height={1024} className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/40" />
+        </div>
+        <div className="container-pro relative py-20 md:py-24 text-primary-foreground">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-glow">
             {tc.eyebrow}
           </span>
@@ -195,7 +199,16 @@ function Contact() {
                   </div>
                   <div>
                     <div className="font-semibold text-foreground">{tc.phone}</div>
-                    <div className="text-muted-foreground text-sm">+225 27 00 00 00 00</div>
+                    <a href="tel:+2250710629429" className="text-muted-foreground text-sm hover:text-primary">+225 07 10 62 94 29</a>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center text-primary shrink-0">
+                    <MessageCircle size={18} />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground">WhatsApp</div>
+                    <a href="https://wa.me/2250503907326" target="_blank" rel="noopener noreferrer" className="text-muted-foreground text-sm hover:text-primary">+225 05 03 90 73 26</a>
                   </div>
                 </li>
               </ul>

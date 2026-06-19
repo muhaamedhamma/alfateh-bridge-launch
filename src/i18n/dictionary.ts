@@ -153,6 +153,9 @@ const fr = {
       { title: "Vision long terme", desc: "Nous bâtissons des partenariats durables, pas des transactions ponctuelles." },
       { title: "Engagement local", desc: "Profondément ivoiriens, nous contribuons à structurer notre marché." },
     ],
+    teamEyebrow: "Notre équipe",
+    teamTitle: "Les visages d'AL FATEH.",
+    teamDesc: "Une équipe expérimentée, ancrée localement, au service de votre croissance.",
     visionEyebrow: "Vision & ambition",
     visionTitle: "Devenir la référence en Afrique de l'Ouest.",
     visionBody:
@@ -525,6 +528,9 @@ const en: typeof fr = {
       { title: "Long-term vision", desc: "We build lasting partnerships, not one-off transactions." },
       { title: "Local commitment", desc: "Deeply Ivorian, we contribute to structuring our market." },
     ],
+    teamEyebrow: "Our team",
+    teamTitle: "The faces of AL FATEH.",
+    teamDesc: "An experienced, locally rooted team serving your growth.",
     visionEyebrow: "Vision & ambition",
     visionTitle: "Becoming the West African reference.",
     visionBody:

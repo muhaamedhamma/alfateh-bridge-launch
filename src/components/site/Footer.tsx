@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Mail, Phone, MapPin, ShoppingCart, Factory } from "lucide-react";
+import { Mail, Phone, MapPin, ShoppingCart, Factory, MessageCircle } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useT } from "@/i18n/I18nProvider";
+import { WHATSAPP_DISPLAY, CALL_DISPLAY, whatsappLink, telLink } from "@/lib/whatsapp";
 
 export function Footer() {
   const t = useT();
@@ -67,10 +68,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 pt-8 border-t border-primary-foreground/10 grid gap-4 md:grid-cols-3 text-xs text-primary-foreground/60">
+        <div className="mt-14 pt-8 border-t border-primary-foreground/10 grid gap-4 md:grid-cols-2 lg:grid-cols-4 text-xs text-primary-foreground/60">
           <p className="flex items-center gap-2"><MapPin size={14} className="text-accent-glow" /> {t.footer.location}</p>
-          <p className="flex items-center gap-2"><Mail size={14} className="text-accent-glow" /> contact@alfateh.ci</p>
-          <p className="flex items-center gap-2"><Phone size={14} className="text-accent-glow" /> +225 27 00 00 00 00</p>
+          <p className="flex items-center gap-2"><Mail size={14} className="text-accent-glow" /> <a href="mailto:contact@alfateh.ci" className="hover:text-primary-foreground">contact@alfateh.ci</a></p>
+          <p className="flex items-center gap-2"><Phone size={14} className="text-accent-glow" /> <a href={telLink()} className="hover:text-primary-foreground">{CALL_DISPLAY}</a></p>
+          <p className="flex items-center gap-2"><MessageCircle size={14} className="text-accent-glow" /> <a href={whatsappLink("Bonjour AL FATEH")} target="_blank" rel="noopener noreferrer" className="hover:text-primary-foreground">{WHATSAPP_DISPLAY}</a></p>
         </div>
         <div className="mt-6 pt-6 border-t border-primary-foreground/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-primary-foreground/50">
           <p>© {new Date().getFullYear()} AL FATEH. {t.footer.rights}</p>
