@@ -3,6 +3,7 @@ import { Section } from "@/components/site/Section";
 import { CtaBanner } from "@/components/site/CtaBanner";
 import { Truck, Factory, TrendingUp, Boxes, Map, HeadphonesIcon } from "lucide-react";
 import { useT } from "@/i18n/I18nProvider";
+import heroImg from "@/assets/hero-warehouse.jpg";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -18,7 +19,9 @@ export const Route = createFileRoute("/services")({
         property: "og:description",
         content: "Une offre 360° pour les industriels et marques agroalimentaires.",
       },
+      { property: "og:image", content: heroImg },
       { property: "og:url", content: "https://alfateh-bridge-launch.lovable.app/services" },
+      { name: "twitter:image", content: heroImg },
     ],
     links: [{ rel: "canonical", href: "https://alfateh-bridge-launch.lovable.app/services" }],
   }),
@@ -32,11 +35,18 @@ function Services() {
   const services = t.services.items.map((s, i) => ({ ...s, icon: serviceIcons[i] }));
   return (
     <>
-      <section className="relative bg-gradient-hero text-primary-foreground py-24 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-accent blur-3xl" />
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src={heroImg}
+            alt=""
+            width={1920}
+            height={1080}
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/40" />
         </div>
-        <div className="container-pro relative">
+        <div className="container-pro relative py-24 md:py-32 text-primary-foreground">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-glow">
             {t.services.eyebrow}
           </span>

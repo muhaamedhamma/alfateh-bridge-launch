@@ -152,9 +152,12 @@ function Contact() {
 
   return (
     <>
-      <section className="bg-gradient-hero text-primary-foreground py-20 md:py-24 relative overflow-hidden">
-        <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-accent/30 blur-3xl" />
-        <div className="container-pro relative">
+      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={networkImg} alt="" width={1600} height={1024} className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/40" />
+        </div>
+        <div className="container-pro relative py-20 md:py-24 text-primary-foreground">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-glow">
             {tc.eyebrow}
           </span>

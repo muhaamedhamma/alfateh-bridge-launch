@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
 import { CtaBanner } from "@/components/site/CtaBanner";
 import partnershipImg from "@/assets/partnership.jpg";
+import retailImg from "@/assets/retail-store.jpg";
 import { Target, Eye, Heart } from "lucide-react";
 import { useT } from "@/i18n/I18nProvider";
 
@@ -30,17 +31,46 @@ export const Route = createFileRoute("/about")({
 
 const valueIcons = [Target, Eye, Heart];
 
+// ────────────────────────────────────────────────────────────────
+// ÉQUIPE — à éditer manuellement.
+// Pour ajouter un membre : copiez un objet ci-dessous et remplacez
+// `name`, `role`, et `photo` (URL ou import d'image dans src/assets).
+// Laissez `photo: ""` pour afficher les initiales.
+// ────────────────────────────────────────────────────────────────
+type TeamMember = { name: string; role: string; photo: string };
+const team: TeamMember[] = [
+  { name: "Mohamed", role: "Directeur Général", photo: "" },
+  { name: "Prénom Nom", role: "Directeur Commercial", photo: "" },
+  { name: "Prénom Nom", role: "Responsable Logistique", photo: "" },
+];
+
+function initials(name: string) {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
+
 function About() {
   const t = useT();
   const values = t.about.values.map((v, i) => ({ ...v, icon: valueIcons[i] }));
   return (
     <>
-      <section className="relative bg-gradient-hero text-primary-foreground overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-accent blur-3xl" />
-          <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-primary-glow blur-3xl" />
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src={partnershipImg}
+            alt=""
+            width={1280}
+            height={896}
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/40" />
         </div>
-        <div className="container-pro relative py-24 md:py-32">
+        <div className="container-pro relative py-24 md:py-32 text-primary-foreground">
           <div className="max-w-3xl">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-glow">
               {t.about.eyebrow}
@@ -58,7 +88,7 @@ function About() {
       <Section eyebrow={t.about.historyEyebrow} title={t.about.historyTitle}>
         <div className="grid gap-12 lg:grid-cols-2 items-center">
           <img
-            src={partnershipImg}
+            src={retailImg}
             alt=""
             width={1280}
             height={896}
@@ -91,7 +121,28 @@ function About() {
         </div>
       </Section>
 
-      <Section eyebrow={t.about.visionEyebrow} title={t.about.visionTitle}>
+      <Section eyebrow={t.about.teamEyebrow} title={t.about.teamTitle} description={t.about.teamDesc}>
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {team.map((m) => (
+            <div
+              key={m.name + m.role}
+              className="bg-card border border-border/60 rounded-2xl p-8 shadow-card text-center hover:-translate-y-1 transition-smooth"
+            >
+              <div className="mx-auto h-32 w-32 rounded-full overflow-hidden bg-gradient-hero text-primary-foreground flex items-center justify-center shadow-elegant">
+                {m.photo ? (
+                  <img src={m.photo} alt={m.name} className="h-full w-full object-cover" />
+                ) : (
+                  <span className="font-display text-3xl font-extrabold">{initials(m.name)}</span>
+                )}
+              </div>
+              <h3 className="mt-5 font-display text-lg font-bold text-primary">{m.name}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">{m.role}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section className="bg-secondary/40" eyebrow={t.about.visionEyebrow} title={t.about.visionTitle}>
         <div className="bg-gradient-hero rounded-3xl p-10 md:p-16 text-primary-foreground shadow-elegant relative overflow-hidden">
           <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-accent/30 blur-3xl" />
           <div className="relative max-w-3xl">

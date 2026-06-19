@@ -153,6 +153,9 @@ const fr = {
       { title: "Vision long terme", desc: "Nous bâtissons des partenariats durables, pas des transactions ponctuelles." },
       { title: "Engagement local", desc: "Profondément ivoiriens, nous contribuons à structurer notre marché." },
     ],
+    teamEyebrow: "Notre équipe",
+    teamTitle: "Les visages d'AL FATEH.",
+    teamDesc: "Une équipe expérimentée, ancrée localement, au service de votre croissance.",
     visionEyebrow: "Vision & ambition",
     visionTitle: "Devenir la référence en Afrique de l'Ouest.",
     visionBody:
