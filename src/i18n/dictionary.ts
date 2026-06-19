@@ -528,6 +528,9 @@ const en: typeof fr = {
       { title: "Long-term vision", desc: "We build lasting partnerships, not one-off transactions." },
       { title: "Local commitment", desc: "Deeply Ivorian, we contribute to structuring our market." },
     ],
+    teamEyebrow: "Our team",
+    teamTitle: "The faces of AL FATEH.",
+    teamDesc: "An experienced, locally rooted team serving your growth.",
     visionEyebrow: "Vision & ambition",
     visionTitle: "Becoming the West African reference.",
     visionBody:
